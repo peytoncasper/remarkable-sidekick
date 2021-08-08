@@ -1,0 +1,12 @@
+name: Upload Marketing Site to GCS Bucket
+on: [push]
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+    - id: upload-site
+      uses: google-github-actions/upload-cloud-storage@main
+      with:
+        credentials: ${{ secrets.GCP_CREDENTIALS }}
+        path: /marketing-site/
+        destination: remarkablesidekick.com/

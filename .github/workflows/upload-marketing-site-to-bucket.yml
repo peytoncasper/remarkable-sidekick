@@ -4,6 +4,10 @@ jobs:
   upload:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v2
+      with:
+        persist-credentials: false 
+        fetch-depth: 0 
     - id: upload-site
       uses: google-github-actions/upload-cloud-storage@main
       with:

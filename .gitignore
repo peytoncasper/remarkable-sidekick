@@ -6,3 +6,9 @@ node_modules/
 /**/.terraform.lock.hcl
 /**/terraform.lock.hcl
 /**/terraform.tfstate
+
+/marketing-site/content/css/fontawesome.min.css
+/marketing-site/content/js/fontawesome.min.js
+/marketing-site/content/webfonts/*
+
+/**/.DS_Store

@@ -10,7 +10,7 @@ resource "google_storage_bucket" "marketing_site" {
   uniform_bucket_level_access = false
 
   website {
-    main_page_suffix = "market-page/index.html"
+    main_page_suffix = "index.html"
   }
 
   cors {
@@ -21,15 +21,18 @@ resource "google_storage_bucket" "marketing_site" {
   }
 }
 
-resource "google_storage_bucket_object" "index_html" {
-  name   = "index.html"
-  source = "index.html"
+resource "google_storage_bucket_object" "content" {
+  for_each = fileset("content", "**")
+  name   = each.key
+  source = "content/${each.key}"
   bucket = google_storage_bucket.marketing_site.name
 }
 
-resource "google_storage_object_access_control" "index_html" {
-  object = google_storage_bucket_object.index_html.output_name
+resource "google_storage_object_acl" "image-store-acl" {
+  for_each = google_storage_bucket_object.content
+  object = each.value.output_name
   bucket = google_storage_bucket.marketing_site.name
-  role   = "READER"
-  entity = "allUsers"
+  role_entity = [
+    "READER:allUsers",
+  ]
 }

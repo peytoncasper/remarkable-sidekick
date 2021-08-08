@@ -10,7 +10,7 @@ resource "google_storage_bucket" "marketing_site" {
   uniform_bucket_level_access = false
 
   website {
-    main_page_suffix = "index.html"
+    main_page_suffix = "market-page/index.html"
   }
 
   cors {
@@ -21,14 +21,15 @@ resource "google_storage_bucket" "marketing_site" {
   }
 }
 
-resource "google_storage_bucket_access_control" "public_rule" {
+resource "google_storage_bucket_object" "index_html" {
+  name   = "index.html"
+  source = "index.html"
+  bucket = google_storage_bucket.marketing_site.name
+}
+
+resource "google_storage_object_access_control" "index_html" {
+  object = google_storage_bucket_object.index_html.output_name
   bucket = google_storage_bucket.marketing_site.name
   role   = "READER"
   entity = "allUsers"
-}
-
-resource "google_storage_bucket_access_control" "github_action_uploader" {
-  bucket = google_storage_bucket.marketing_site.name
-  role   = "WRITER"
-  entity = "user-${data.google_service_account.github_actions.email}"
 }

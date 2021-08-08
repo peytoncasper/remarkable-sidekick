@@ -1,7 +1,8 @@
 node_modules/
 .idea/
-terraform/**/backend.tf
-terraform/**/.terraform/
-terraform/**/.terraform.lock.hcl
-terraform/**/terraform.lock.hcl
-terraform/**/terraform.tfstate
+
+/**/backend.tf
+/**/.terraform/
+/**/.terraform.lock.hcl
+/**/terraform.lock.hcl
+/**/terraform.tfstate

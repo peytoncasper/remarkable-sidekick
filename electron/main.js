@@ -7,11 +7,11 @@ const ssh = new NodeSSH()
 
 function createWindow () {
     const win = new BrowserWindow({
-        width: 800,
-        height: 600
+        width: 1440,
+        height: 900
     })
 
-    win.loadFile('index.html')
+    win.loadFile('./src/public/index.html')
 }
 
 //

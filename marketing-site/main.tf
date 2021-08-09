@@ -26,6 +26,7 @@ resource "google_storage_bucket_object" "content" {
   name   = each.key
   source = "content/${each.key}"
   bucket = google_storage_bucket.marketing_site.name
+  cache_control = "max-age=60"
 }
 
 resource "google_storage_object_acl" "image-store-acl" {

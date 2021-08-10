@@ -12,3 +12,5 @@
 /marketing-site/content/webfonts/*
 
 /**/.DS_Store
+
+electron/dist

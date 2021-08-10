@@ -1,6 +1,6 @@
 import {FileUpload, Overlay, OverlayButtonContainer, UploadLabel} from "./styles";
 import * as React from "react";
-import {SimpleIcon} from "../FontAwesome/simple";
+import {SolidIcon} from "../FontAwesome/solid";
 import background from "../../static/background.png";
 import {useEffect, useRef} from "react";
 
@@ -37,7 +37,7 @@ function handleMouseEnter(e: MouseEvent) {
 
 export function RemarkableModel() {
     const isMountedRef = useRef(false);
-    const [mouseOver, setMouseOver] = React.useState(false);
+    const [mouseOver, setMouseOver] = React.useState(true);
 
     function handleMouseOver(event: MouseEvent) {
         if (isMountedRef.current) {

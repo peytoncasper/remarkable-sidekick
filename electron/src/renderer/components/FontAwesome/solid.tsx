@@ -18,12 +18,14 @@ function fontAwesomeLookup(name: string): string {
             return "fa-exchange"
         case "random":
             return "fa-random"
+        case "cog":
+            return "fa-cog"
         default:
             return "fa-home"
     }
 }
 
-export const SimpleIcon : React.FunctionComponent<IconComponentProps> = (props) => {
+export const SolidIcon : React.FunctionComponent<IconComponentProps> = (props) => {
     let className = mergeClassNames("fas", fontAwesomeLookup(props.name))
 
     if (props.className) {

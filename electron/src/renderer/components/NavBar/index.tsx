@@ -1,7 +1,5 @@
-import { Fragment, useState } from 'react'
-import { Dialog, Menu, Transition } from '@headlessui/react'
-import styled from "styled-components";
-import {SimpleIcon} from "../FontAwesome/simple";
+import { useState } from 'react'
+import {SolidIcon} from "../FontAwesome/solid";
 import {mergeClassNames} from "../utils";
 import * as React from "react";
 
@@ -11,8 +9,6 @@ const sidebarNavigation = [
 
 
 export default function NavBar() {
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-
     return (
         <div className="h-screen overflow-hidden bg-gray-100 flex flex-col">
             <div className="min-h-0 flex-1 flex overflow-hidden">
@@ -27,7 +23,7 @@ export default function NavBar() {
                                     'flex-shrink-0 inline-flex items-center justify-center h-14 w-14 rounded-lg'
                                 )}
                             >
-                                <SimpleIcon key={item.name} className={"h-6 w-6"} name={item.name} fontSize={"large"}/>
+                                <SolidIcon key={item.name} className={"h-6 w-6"} name={item.name} fontSize={"large"}/>
                                 <span className="sr-only">{item.name}</span>
                             </a>
                         ))}

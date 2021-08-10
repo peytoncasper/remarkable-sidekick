@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {SimpleIcon} from "../FontAwesome/simple";
+import {SolidIcon} from "../FontAwesome/solid";
 
 
 
@@ -10,9 +10,6 @@ export const Overlay = styled.div`
   overflow: hidden;
   z-index: 2;
   cursor: pointer;
-  ::-webkit-app {
-    region: no-drag;
-  }
 ;`
 
 export const OverlayButtonContainer = styled.div`
@@ -21,9 +18,6 @@ export const OverlayButtonContainer = styled.div`
   left: 30%;
   overflow: hidden;
   z-index: 3;
-  ::-webkit-app {
-    region: no-drag;
-  }
 `;
 
 export const UploadLabel = styled.label`
@@ -31,17 +25,11 @@ export const UploadLabel = styled.label`
   display: inline-block;
   padding: 6px 12px;
   cursor: pointer;
-  ::-webkit-app {
-    region: no-drag;
-  }
 `;
 
 
 export const FileUpload = styled.input`
   display: none;
-  ::-webkit-app {
-    region: no-drag;
-  }
 `;
 
 

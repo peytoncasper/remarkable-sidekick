@@ -1,5 +1,5 @@
 import * as React from "react";
-import {SimpleIcon} from "../FontAwesome/simple";
+import {SolidIcon} from "../FontAwesome/solid";
 import logo from "../../static/rms-icon-white.png";
 
 function TopNavBar() {
@@ -33,7 +33,7 @@ function TopNavBar() {
                             className="block w-full border-transparent pl-12 placeholder-gray-500 focus:border-transparent sm:text-sm focus:ring-0"
                         />
                         <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center justify-center pl-4">
-                            <SimpleIcon name={"search"} className={"h-5 w-5"} aria-hidden="true"/>
+                            <SolidIcon name={"search"} className={"h-5 w-5"} aria-hidden="true"/>
                         </div>
                     </div>
                 </div>

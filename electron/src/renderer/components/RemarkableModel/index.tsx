@@ -66,7 +66,7 @@ export function RemarkableModel() {
     }, [])
 
     return (
-        <div style={{maxHeight:"700px"}} className={"container max-w-lg h-5/6 bg-gray-200 rounded-lg flex flex-row"}>
+        <div style={{maxHeight:"600px", maxWidth:"450px"}} className={"container max-w-lg h-5/6 bg-gray-200 rounded-lg flex flex-row"}>
             <div className={"w-10 h-full bg-gray-300 rounded-bl-lg rounded-tl-lg"}/>
             <div id="overlayContainer" className={"w-full border-gray-300 border-2 m-8 mb-20"} style={{position: "relative"}}>
                 <Overlay className={ mouseOver ? "bg-gray-300 bg-opacity-50" : ""}/>

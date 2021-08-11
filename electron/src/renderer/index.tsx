@@ -3,12 +3,15 @@ import * as ReactDOM from "react-dom";
 import App from './App';
 
 import "./static/css/index.css";
+import {RecoilRoot} from "recoil";
 
 // import reportWebVitals from './reportWebVitals';
 ReactDOM.render(
-    <React.StrictMode>
-        <App />
-    </React.StrictMode>,
+    <RecoilRoot>
+        <React.StrictMode>
+            <App />
+        </React.StrictMode>
+    </RecoilRoot>,
     document.getElementById('root')
 );
 

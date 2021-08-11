@@ -14,9 +14,11 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "strictNullChecks": true,
+    "strictNullChecks": true
   },
   "exclude": ["node_modules"],
-  "include": ["*.ts"],
-
+  "include": [
+    "*.ts",
+    "../messages/*.ts"
+  ]
 }

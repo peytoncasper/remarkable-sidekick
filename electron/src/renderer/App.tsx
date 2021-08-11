@@ -2,23 +2,41 @@ import * as React from "react";
 import TopNavBar from "./components/Navigation/topNavBar";
 import SideNavBar from "./components/Navigation/sideNavBar";
 import {Route, Switch} from "react-router";
-import {RemarkableModel} from "_renderer/components/RemarkableModel";
 import {HashRouter} from "react-router-dom";
 import Settings from "_renderer/Settings";
+import Home from "_renderer/Home";
+import {IPCListener} from "_renderer/IPCConsumer";
+import {useEffect} from "react";
+import {useRecoilState} from "recoil";
+import {settingsAtom} from "_renderer/atoms/settings";
+
+// const { ipcRenderer } = require('electron')
+
 
 function App() {
+    const [settings, setSettings] = useRecoilState(settingsAtom);
+
+    useEffect(() => {
+        // if(!settings) {
+
+        window.api.sendSynchronousMessage({
+            type: "get_settings"
+        })
+        // }
+    }, [])
 
     return (
         <HashRouter >
+            <IPCListener/>
             <div className={"h-screen flex flex-col"}>
-                <div className="h-screen overflow-hidden bg-gray-100 flex flex-col">
+                <div className="h-screen overflow-hidden flex flex-col">
                     <TopNavBar/>
                     <div className="min-h-0 flex-1 flex overflow-hidden">
                         <SideNavBar path={"/"}/>
-                        <main className="m-6 min-w-0 flex-1 border-t border-gray-200 lg:flex">
+                        <main className="min-w-0 flex-1 lg:flex">
                             <Switch>
                                 <Route path="/settings" component={Settings}/>
-                                <Route path="/" component={RemarkableModel}/>
+                                <Route path="/" component={Home}/>
                             </Switch>
 
                             {/*/!* Primary column *!/*/}

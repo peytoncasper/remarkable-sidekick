@@ -4,48 +4,43 @@ import * as url from 'url';
 const path = require('path')
 const { ipcMain } = require('electron')
 
-// require('electron-reload')(__dirname, {
-//     electron: path.join(__dirname, 'node_modules', '.bin', 'electron')
-// })
 
-function createWindow () {
-    let mainWindow = new BrowserWindow({
+export function createWindow() {
+    return new BrowserWindow({
         height: 950,
         width: 1440,
         webPreferences: {
             webSecurity: true,
-            devTools: process.env.NODE_ENV !== 'production',
+            // devTools: process.env.NODE_ENV !== 'production',
+            devTools: true,
             preload: path.resolve(__dirname, 'preload.bundle.js'),
             worldSafeExecuteJavaScript: true,
             contextIsolation: true,
         },
     });
-
-    mainWindow.loadURL(
-        url.format({
-            pathname: path.join(__dirname, './index.html'),
-            protocol: 'file:',
-            slashes: true,
-        }),
-    ).finally(() => { /* no action */ });
 }
+
 
 app.on('window-all-closed', function () {
     if (process.platform !== 'darwin') app.quit()
 })
 
 app.whenReady().then(() => {
+
+    const window = createWindow()
+
     ipcMain.on('synchronous-message', handleIPCMessage)
     ipcMain.on('asynchronous-message', handleIPCMessage)
 
-    createWindow()
+    window.loadURL(
+        url.format({
+            pathname: path.join(__dirname, './index.html'),
+            protocol: 'file:',
+            slashes: true,
+        }),
+    ).finally(() => { /* no action */ });
 
-    app.on('activate', function () {
-        if (BrowserWindow.getAllWindows().length === 0) createWindow()
-    })
-
-
-
+    global.browserWindow = window
 
     // installExtension(REACT_DEVELOPER_TOOLS)
     //     .then((name) => console.log(`Added Extension:  ${name}`))

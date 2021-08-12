@@ -34,43 +34,49 @@ function handleMouseEnter(e: MouseEvent) {
 //     axios.post("api/uploadfile", formData);
 // };
 
+interface RemarkableProps {
+    image: string
+}
 
-export function RemarkableModel() {
+
+export const RemarkableModel: React.FC<RemarkableProps> = (props) => {
     const isMountedRef = useRef(false);
-    const [mouseOver, setMouseOver] = React.useState(true);
+    const [mouseOver, setMouseOver] = React.useState(false);
 
-    function handleMouseOver(event: MouseEvent) {
-        if (isMountedRef.current) {
-            setMouseOver(true)
-        }
-    }
+    // function handleMouseOver(event: MouseEvent) {
+    //     if (isMountedRef.current) {
+    //         setMouseOver(true)
+    //     }
+    // }
+    //
+    // function handleMouseLeave(event: MouseEvent) {
+    //     if (isMountedRef.current) {
+    //         setMouseOver(false)
+    //     }
+    // }
 
-    function handleMouseLeave(event: MouseEvent) {
-        if (isMountedRef.current) {
-            setMouseOver(false)
-        }
-    }
-
-    useEffect(() => {
-        isMountedRef.current = true;
-        const overlayContainer = document.getElementById("overlayContainer") as HTMLDivElement
-        overlayContainer.addEventListener("mouseover", handleMouseOver);
-        overlayContainer.addEventListener("mouseleave", handleMouseLeave);
-
-        return () => {
-            isMountedRef.current = false;
-            overlayContainer.removeEventListener("mouseover", handleMouseOver);
-            overlayContainer.removeEventListener("mouseleave", handleMouseLeave);
-        }
-
-    }, [])
+    // useEffect(() => {
+    //     isMountedRef.current = true;
+    //     const overlayContainer = document.getElementById("overlayContainer") as HTMLDivElement
+    //     overlayContainer.addEventListener("mouseover", handleMouseOver);
+    //     overlayContainer.addEventListener("mouseleave", handleMouseLeave);
+    //
+    //     return () => {
+    //         isMountedRef.current = false;
+    //         overlayContainer.removeEventListener("mouseover", handleMouseOver);
+    //         overlayContainer.removeEventListener("mouseleave", handleMouseLeave);
+    //     }
+    //
+    // }, [])
 
     return (
         <div style={{maxHeight:"600px", maxWidth:"450px"}} className={"container max-w-lg h-5/6 bg-gray-200 rounded-lg flex flex-row"}>
             <div className={"w-10 h-full bg-gray-300 rounded-bl-lg rounded-tl-lg"}/>
             <div id="overlayContainer" className={"w-full border-gray-300 border-2 m-8 mb-20"} style={{position: "relative"}}>
                 <Overlay className={ mouseOver ? "bg-gray-300 bg-opacity-50" : ""}/>
-                <img className={"w-full h-full max-w-full max-h-full"} src={background} />
+                {console.log(props.image)}
+                {props.image ? <img className={"w-full h-full max-w-full max-h-full"} src={"data:image/png;base64," + props.image}/> : null}
+
                 {mouseOver ?
                     <OverlayButtonContainer>
                         <UploadLabel htmlFor="file-upload" className="custom-file-upload bg-gray-300 hover:bg-gray-400 rounded-lg centered">

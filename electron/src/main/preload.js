@@ -21,7 +21,14 @@ contextBridge.exposeInMainWorld('api', {
     },
     subscribeAsynchronousReply: (callback) => {
         ipcRenderer.on("asynchronous-reply", callback)
-    }
+    },
+    subscribeAsynchronousMessage: (callback) => {
+        ipcRenderer.on("asynchronous-message", callback)
+    },
+    disconnect: (callback) => {
+        ipcRenderer.removeAllListeners("asynchronous-reply")
+        ipcRenderer.removeAllListeners("asynchronous-message")
+    },
 })
 
 export {}

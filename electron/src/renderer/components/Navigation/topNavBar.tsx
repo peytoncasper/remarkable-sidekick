@@ -5,19 +5,7 @@ import logo from "../../static/rms-icon-white.png";
 function TopNavBar() {
     return (
         <header className="flex-shrink-0 relative h-16 bg-white flex items-center">
-            {/* Logo area */}
-            <div className="absolute inset-y-0 left-0 md:static md:flex-shrink-0">
-                <a
-                    href="#"
-                    className="flex items-center justify-center h-16 w-16 bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-600 md:w-20"
-                >
-                    <img
-                        className="h-8 w-auto"
-                        src={logo}
-                        alt="Workflow"
-                    />
-                </a>
-            </div>
+
 
             {/* Desktop nav area */}
             <div className="hidden md:min-w-0 md:flex-1 md:flex md:items-center md:justify-between">

@@ -20,6 +20,8 @@ function fontAwesomeLookup(name: string): string {
             return "fa-random"
         case "cog":
             return "fa-cog"
+        case "image-polaroid":
+            return "fa-image-polaroid"
         default:
             return "fa-home"
     }

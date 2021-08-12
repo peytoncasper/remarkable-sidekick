@@ -9,8 +9,8 @@ import {IPCListener} from "_renderer/IPCConsumer";
 import {useEffect} from "react";
 import {useRecoilState} from "recoil";
 import {settingsAtom} from "_renderer/atoms/settings";
-
-// const { ipcRenderer } = require('electron')
+import LockscreenManagement from "_renderer/LockscreenManagement";
+import logo from "_renderer/static/rms-icon-white.png";
 
 
 function App() {
@@ -30,11 +30,12 @@ function App() {
             <IPCListener/>
             <div className={"h-screen flex flex-col"}>
                 <div className="h-screen overflow-hidden flex flex-col">
-                    <TopNavBar/>
+
                     <div className="min-h-0 flex-1 flex overflow-hidden">
                         <SideNavBar path={"/"}/>
                         <main className="min-w-0 flex-1 lg:flex">
                             <Switch>
+                                <Route path="/lockscreen" component={LockscreenManagement}/>
                                 <Route path="/settings" component={Settings}/>
                                 <Route path="/" component={Home}/>
                             </Switch>

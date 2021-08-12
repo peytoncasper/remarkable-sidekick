@@ -34,6 +34,7 @@
     "@types/styled-components": "^5.1.11",
     "@types/react-router": "^5.1.8",
     "@types/react-router-dom": "^5.1.2",
+    "@types/ssh2": "^0.5.47",
     "copy-webpack-plugin": "^9.0.1",
     "cross-env": "^7.0.3",
     "css-loader": "^6.2.0",

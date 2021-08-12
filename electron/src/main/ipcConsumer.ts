@@ -1,11 +1,13 @@
 import {GetDeviceStats} from "../messages/deviceStats";
 import {GetSettings} from "../messages/settings";
 import {Settings} from "../common/settings";
+import {Connect} from "../common/remarkableConnection";
 
 let settings = require("./settings");
+let remarkable = require("./connection")
 
 export function handleIPCMessage(e: any, message: any) {
-    console.log(message)
+    console.debug(message)
 
     switch(message.type) {
         case "get_device_settings":
@@ -16,6 +18,12 @@ export function handleIPCMessage(e: any, message: any) {
             break;
         case "save_settings":
             handleSaveSettings(e, message)
+            break;
+        case "connect":
+            handleConnect(e, message)
+            break;
+        case "get_suspended_image":
+            handleGetSuspendedScreen(e, message)
             break;
     }
 }
@@ -35,14 +43,15 @@ function handleGetSettings(event: any, message: GetSettings) {
 }
 
 function handleSaveSettings(event: any, message: Settings) {
-    console.log(message)
     settings.saveSettingsToFile(message)
+}
 
-    event.reply('asynchronous-reply', {
-        type: "get_settings",
-        deviceType: settings.deviceType,
-        host: settings.host,
-        username: settings.username,
-        password: settings.password
-    })
+function handleConnect(event: any, message: Connect) {
+    if(!remarkable.connected) {
+        remarkable.connect(settings)
+    }
+}
+
+function handleGetSuspendedScreen(event: any, message: any) {
+    remarkable.getSuspendedImage()
 }

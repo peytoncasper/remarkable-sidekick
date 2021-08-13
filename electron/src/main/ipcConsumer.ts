@@ -6,6 +6,7 @@ import {Image} from "../common/image";
 import electron from "electron";
 import path from "path";
 import fs from "fs";
+import {uploadImage} from "./api";
 
 let settings = require("./settings");
 let remarkable = require("./connection")
@@ -34,6 +35,9 @@ export function handleIPCMessage(e: any, message: any) {
             break;
         case "save_image":
             handleSaveImage(e, message)
+            break;
+        case "upload_image":
+            handleUploadImage(e, message)
             break;
     }
 }
@@ -109,4 +113,16 @@ function handleGetLocalImages(event: any, message: any) {
             images
         });
     });
+}
+
+function handleUploadImage(event: any, message: any) {
+    const userDataPath = electron.app.getPath('userData');
+    const currentImagePath = path.join(userDataPath, "currentLockscreen.png");
+    const currentImage = fs.readFileSync(currentImagePath, 'base64')
+
+    uploadImage({
+        type: "image",
+        name: "currentLockscreen.png",
+        data: currentImage
+    })
 }

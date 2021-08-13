@@ -1,0 +1,21 @@
+swagger: '2.0'
+info:
+  title: API_ID optional-string
+  description: Remarkable API with Cloud Functions backend
+  version: 0.0.1
+schemes:
+  - https
+produces:
+  - application/json
+paths:
+  /image/upload:
+    post:
+      summary: Allows a user to upload a lockscreen image
+      operationId: hello
+      x-google-backend:
+        address: https://us-east1-remarkable-sidekick.cloudfunctions.net/upload-image
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string

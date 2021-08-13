@@ -18,6 +18,12 @@ export function LockscreenManagement() {
     const [selectedImage, setSelectedImage] = useState();
     const [imageSelected, setImageSelected] = useState(false);
 
+    function handleUploadImage() {
+        window.api.sendAsynchronousMessage({
+            type: "upload_image",
+        })
+    }
+
     function saveImage(event: any) {
         const file = event.target.files[0]
 
@@ -82,13 +88,14 @@ export function LockscreenManagement() {
                     </div>
                 </div>
                 <div className="mx-10 w-72">
-                    {/*<button*/}
-                    {/*    id={"saveSettings"}*/}
-                    {/*    className="shadow focus:shadow-outline focus:outline-none text-white font-bold py-1 px-2 rounded"*/}
-                    {/*    style={{background: "#08DAAD"}}*/}
-                    {/*>*/}
-                    {/*    Connect*/}
-                    {/*</button>*/}
+                    <button
+                        id={"saveSettings"}
+                        className="shadow focus:shadow-outline focus:outline-none text-white font-bold py-1 px-2 rounded"
+                        style={{background: "#08DAAD"}}
+                        onClick={handleUploadImage}
+                    >
+                        Upload
+                    </button>
 
                     <UploadLabel
                         htmlFor="file-upload"

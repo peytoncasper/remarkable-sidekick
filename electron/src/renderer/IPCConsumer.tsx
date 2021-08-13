@@ -6,10 +6,11 @@ import {Settings} from "_/common/settings";
 import {settingsAtom} from "_renderer/atoms/settings";
 import {ConnectionStatus} from "_/common/remarkableConnection";
 import {suspendedImageAtom} from "_renderer/atoms/suspendedImage";
-import {Image} from "_/common/image";
+import {Image, LocalImages} from "_/common/image";
 import {connectionStatusAtom} from "_renderer/atoms/connectionStatus";
 import {StorageDetails} from "_/common/storage";
 import {storageDetailsAtom} from "_renderer/atoms/storageDetails";
+import {localImagesAtom} from "_renderer/atoms/localImagesAtom";
 // const { ipcRenderer } = require('electron')
 
 export interface IPCHandler {
@@ -18,6 +19,7 @@ export interface IPCHandler {
     handleConnectionStatus: (event: ConnectionStatus) => void;
     handleSuspendedImage: (event: Image) => void;
     handleStorageDetails: (event: StorageDetails) => void;
+    handleLocalImages: (event: LocalImages) => void;
 }
 
 export class IPCConsumer {
@@ -32,6 +34,7 @@ export class IPCConsumer {
     connect() {
         window.api.subscribeAsynchronousReply(this.onMessage.bind(this))
         window.api.subscribeAsynchronousMessage(this.onMessage.bind(this))
+
         // ipcRenderer.on('asynchronous-reply', this.onMessage.bind(this))
     }
 
@@ -53,6 +56,9 @@ export class IPCConsumer {
             case "storage_details":
                 this.handler.handleStorageDetails(arg)
                 break;
+            case "local_images":
+                this.handler.handleLocalImages(arg)
+                break;
         }
     }
 }
@@ -63,6 +69,7 @@ export function IPCListener() {
     const [connectionStatus, setConnectionStatus] = useRecoilState(connectionStatusAtom);
     const [suspendedImage, setSuspendedImage] = useRecoilState(suspendedImageAtom);
     const [storageDetails, setStorageDetails] = useRecoilState(storageDetailsAtom);
+    const [localImages, setLocalImages] = useRecoilState(localImagesAtom);
 
 
     useEffect(() => {
@@ -84,6 +91,9 @@ export function IPCListener() {
                 console.log(event)
 
                 setStorageDetails(event)
+            }),
+            handleLocalImages: ((event: LocalImages) => {
+                setLocalImages(event.images)
             })
         }
 

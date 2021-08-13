@@ -30,6 +30,7 @@ export function Home() {
         window.api.sendSynchronousMessage({
             type: "connect"
         })
+
     }
 
     return (

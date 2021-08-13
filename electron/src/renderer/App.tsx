@@ -19,8 +19,12 @@ function App() {
     useEffect(() => {
         // if(!settings) {
 
-        window.api.sendSynchronousMessage({
+        window.api.sendAsynchronousMessage({
             type: "get_settings"
+        })
+
+        window.api.sendAsynchronousMessage({
+            type: "get_local_images"
         })
         // }
     }, [])

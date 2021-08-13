@@ -3,6 +3,7 @@ import * as electron from "electron";
 import * as path from "path";
 import * as fs from "fs";
 import {Path, StorageDetails} from "../common/storage";
+import {Image} from "../common/image";
 const {NodeSSH} = require('node-ssh')
 
 let settings:   Settings
@@ -46,6 +47,7 @@ export function getSuspendedImage() {
 
             global.browserWindow.webContents.send('asynchronous-message', {
                 type: "suspended_image",
+                name: "suspended.png",
                 data: img
             });
 
@@ -102,6 +104,8 @@ export function getStorageStats() {
         })
     }
 }
+
+
 
 function updateStatus(s: string) {
     status = s

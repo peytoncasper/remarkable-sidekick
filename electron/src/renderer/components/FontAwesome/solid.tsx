@@ -22,6 +22,8 @@ function fontAwesomeLookup(name: string): string {
             return "fa-cog"
         case "image-polaroid":
             return "fa-image-polaroid"
+        case "file-upload":
+            return "fa-file-upload"
         default:
             return "fa-home"
     }

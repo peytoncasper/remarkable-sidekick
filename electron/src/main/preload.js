@@ -17,10 +17,13 @@ contextBridge.exposeInMainWorld('api', {
         ipcRenderer.send("asynchronous-message", message)
     },
     sendSynchronousMessage: (message) => {
-        ipcRenderer.send("synchronous-message", message)
+        return ipcRenderer.sendSync("synchronous-message", message)
     },
     subscribeAsynchronousReply: (callback) => {
         ipcRenderer.on("asynchronous-reply", callback)
+    },
+    subscribeSynchronousReply: (callback) => {
+        ipcRenderer.on("synchronous-reply", callback)
     },
     subscribeAsynchronousMessage: (callback) => {
         ipcRenderer.on("asynchronous-message", callback)

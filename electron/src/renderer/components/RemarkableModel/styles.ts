@@ -21,10 +21,13 @@ export const OverlayButtonContainer = styled.div`
 `;
 
 export const UploadLabel = styled.label`
-  border: 1px solid #ccc;
   display: inline-block;
-  padding: 6px 12px;
   cursor: pointer;
+  background: #08DAAD;
+  
+  :hover {
+    background-color: #03C99E;
+  }
 `;
 
 

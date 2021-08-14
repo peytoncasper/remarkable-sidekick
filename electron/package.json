@@ -20,7 +20,9 @@
     "recoil": "^0.3.1",
     "history": "^5.0.0",
     "web-vitals": "^1.0.1",
-    "axios": "^0.21.1"
+    "axios": "^0.21.1",
+    "jwt-decode": "^3.1.2",
+    "keytar": "^7.7.0"
   },
   "devDependencies": {
     "@headlessui/react": "^1.4.0",

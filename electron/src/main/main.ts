@@ -4,7 +4,6 @@ import * as url from 'url';
 const path = require('path')
 const { ipcMain } = require('electron')
 
-
 export function createWindow() {
     return new BrowserWindow({
         height: 950,
@@ -26,6 +25,7 @@ app.on('window-all-closed', function () {
 })
 
 app.whenReady().then(() => {
+
 
     const window = createWindow()
 

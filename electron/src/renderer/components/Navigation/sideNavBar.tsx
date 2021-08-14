@@ -67,6 +67,17 @@ export const SideNavBar: React.FC<SideNavBarProps> = (props) => {
                     <span className="sr-only">"Lockscreens</span>
                 </Link>
 
+                <Link
+                    to="/highlights"
+                    className={mergeClassNames(
+                        location.pathname == "/highlights" ? 'bg-gray-900 text-white' : 'text-gray-400 hover:bg-gray-700',
+                        'flex-shrink-0 inline-flex items-center justify-center h-14 w-14 rounded-lg'
+                    )}
+                >
+                    <SolidIcon className={"h-6 w-6"} name={"highlighter"} fontSize={"large"}/>
+                    <span className="sr-only">"Highlights</span>
+                </Link>
+
 
                 <Link
                     to="/settings"

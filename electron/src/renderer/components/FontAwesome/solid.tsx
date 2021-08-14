@@ -24,6 +24,10 @@ function fontAwesomeLookup(name: string): string {
             return "fa-image-polaroid"
         case "file-upload":
             return "fa-file-upload"
+        case "wifi":
+            return "fa-wifi"
+        case "highlighter":
+            return "fa-highlighter"
         default:
             return "fa-home"
     }

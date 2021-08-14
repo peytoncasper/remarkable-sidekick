@@ -41,6 +41,7 @@ function App() {
                             <Switch>
                                 <Route path="/lockscreen" component={LockscreenManagement}/>
                                 <Route path="/settings" component={Settings}/>
+                                <Route path="/highlights" component={Settings}/>
                                 <Route path="/" component={Home}/>
                             </Switch>
 

@@ -4,12 +4,14 @@ import * as path from "path";
 import * as fs from "fs";
 import {Path, StorageDetails} from "../common/storage";
 import {Image} from "../common/image";
+import Timeout = NodeJS.Timeout;
 const {NodeSSH} = require('node-ssh')
 
-let settings:   Settings
-let ssh:        typeof NodeSSH
-let status:     string = "disconnected"
-let storage:    StorageDetails[]
+let settings:           Settings
+let ssh:                typeof NodeSSH
+let status:             string = "disconnected"
+let storage:            StorageDetails[]
+let connectionMonitor:  Timeout
 
 export function connect(s: Settings) {
     settings = s
@@ -20,18 +22,26 @@ export function connect(s: Settings) {
 
     updateStatus("connecting")
 
+
     ssh.connect({
         host: settings.host,
         username: settings.username,
-        password: settings.password
-    }).catch((error: any) => {
-        console.log(error)
-        updateStatus("disconnected")
+        password: settings.password,
+        readyTimeout: 500,
+        keepaliveInterval: 500,
+        keepaliveCountMax: 1
     }).then(() => {
         updateStatus("connected")
+
+        ssh.connection.on("error", disconnect)
+
         getSuspendedImage()
         getStorageStats()
+    }).catch((error: any) => {
+        disconnect()
     })
+
+
 }
 
 export function getSuspendedImage() {
@@ -55,6 +65,8 @@ export function getSuspendedImage() {
             console.error("error downloading the suspended image")
             console.log(error)
         })
+    } else {
+        disconnect()
     }
 
 }
@@ -102,10 +114,14 @@ export function getStorageStats() {
             });
 
         })
+    } else {
+        disconnect()
     }
 }
 
-
+function disconnect() {
+    updateStatus("disconnected")
+}
 
 function updateStatus(s: string) {
     status = s
@@ -115,4 +131,6 @@ function updateStatus(s: string) {
         status
     });
 }
+
+
 

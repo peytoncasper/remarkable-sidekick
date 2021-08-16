@@ -121,12 +121,22 @@ export function LockscreenManagement() {
             <div className="p-10 flex ">
                 <ul role="list" className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8 h-full w-full">
                     {localImages.map((image) => (
-                        <li key={image.name} className="relative">
-                            <div className="h-72 w-52 group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500 overflow-hidden">
-                                <img src={"data:image/png;base64," + image.data} alt="" className="object-cover pointer-events-none group-hover:opacity-75 h-72 w-52" />
+                        <li key={image.name} className="relative" style={{width: 250, height: 333}}>
+                            <div  className=" group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500 overflow-hidden">
+                                <img src={"data:image/png;base64," + image.data} alt="" className="object-cover pointer-events-none group-hover:opacity-75" />
                                 <button type="button" className="absolute inset-0 focus:outline-none">
                                     <span className="sr-only">View details for {image.name}</span>
                                 </button>
+                            </div>
+                            <div className="w-full transform flex flex-row justify-end px-2 -translate-y-10">
+                                <div className={mergeClassNames(
+                                    image.name == "currentLockscreen.png" ? "bg-indigo-400" : "border-2 bg-gray-200 border-gray-300",
+                                    "rounded-full h-8 w-8 flex items-center justify-center "
+                                    )}
+                                >
+                                    {image.name == "currentLockscreen.png" ? <SolidIcon name="check" fontSize="xx-small" className="text-white"/> : null}
+
+                                </div>
                             </div>
                             <p className="mt-2 block text-sm font-medium text-gray-900 truncate pointer-events-none">{image.name}</p>
                             {/*<p className="block text-sm font-medium text-gray-500 pointer-events-none">{file.size}</p>*/}

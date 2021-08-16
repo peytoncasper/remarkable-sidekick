@@ -2,6 +2,7 @@ const lodash = require('lodash');
 const CopyPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
+const {IgnorePlugin} = require("webpack");
 
 function srcPaths(src) {
     return path.join(__dirname, src);
@@ -16,6 +17,12 @@ const commonConfig = {
     mode: isEnvProduction ? 'production' : 'development',
     output: { path: srcPaths('dist') },
     node: { __dirname: false, __filename: false },
+    optimization: {
+        minimize: false
+    },
+    externals: {
+        sharp: 'commonjs sharp'
+    },
     resolve: {
         alias: {
             _: srcPaths('src'),
@@ -51,6 +58,10 @@ const commonConfig = {
                 options: {
                     name: '[path][name].[ext]',
                 },
+            },
+            {
+                test: /\.node$/,
+                loader: "node-loader",
             },
         ],
     },

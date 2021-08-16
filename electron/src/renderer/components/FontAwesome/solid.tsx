@@ -28,6 +28,8 @@ function fontAwesomeLookup(name: string): string {
             return "fa-wifi"
         case "highlighter":
             return "fa-highlighter"
+        case "check":
+            return "fa-check"
         default:
             return "fa-home"
     }

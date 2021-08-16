@@ -8,6 +8,8 @@ import path from "path";
 import fs from "fs";
 import {uploadImage} from "./api";
 
+const sharp = require('sharp');
+
 let settings = require("./settings");
 let remarkable = require("./connection")
 
@@ -71,6 +73,11 @@ function handleGetSuspendedScreen(event: any, message: any) {
 }
 
 export function handleSaveImage(event: any, image: Image) {
+    saveImage(image)
+    handleGetLocalImages(event, image)
+}
+
+export function saveImage(image: Image) {
     const userDataPath = electron.app.getPath('userData');
     const imageFolder = path.join(userDataPath, "/local_images/");
 
@@ -78,16 +85,17 @@ export function handleSaveImage(event: any, image: Image) {
         fs.mkdirSync(imageFolder)
     }
 
-    fs.writeFileSync(imageFolder + image.name, image.data, 'base64')
+    const fileName = imageFolder + image.name
 
-    handleGetLocalImages(event, image)
+    fs.writeFileSync(fileName, image.data, 'base64')
+
 }
 
 function handleGetLocalImages(event: any, message: any) {
     const userDataPath = electron.app.getPath('userData');
     const localImages = path.join(userDataPath, "/local_images/");
 
-    fs.readdir(localImages, (err, files) => {
+    fs.readdir(localImages, async (err, files) => {
         let images: Image[] = []
 
         const currentImagePath = path.join(userDataPath, "currentLockscreen.png");
@@ -98,16 +106,22 @@ function handleGetLocalImages(event: any, message: any) {
             data: currentImage
         })
 
-        files.forEach(p => {
-            const file = fs.readFileSync(localImages + p, 'base64')
+        for (const p of files) {
             const name = path.parse(localImages + p).name
 
-            images.push({
-                type: "image",
-                name: name,
-                data: file
-            })
-        });
+            await sharp(localImages + p)
+                .resize(250, 333)
+                .toBuffer()
+                .then((b: Buffer) => {
+                    images.push({
+                        type: "image",
+                        name: name,
+                        data: b.toString("base64")
+                    })
+                })
+
+        }
+
         global.browserWindow.webContents.send('asynchronous-message', {
             type: "local_images",
             images

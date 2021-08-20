@@ -7,7 +7,7 @@ import electron from "electron";
 import path from "path";
 import fs from "fs";
 import {uploadImage} from "./api";
-import {changeSuspendedImage} from "./connection";
+import {changeSuspendedImage, getSuspendedImage} from "./connection";
 const defaultRemarkableImage = "assets/default_remarkable_lockscreen.png";
 
 const sharp = require('sharp');
@@ -168,26 +168,36 @@ function handleChangeLockscreen(event: any, image: Image) {
     const userDataPath = electron.app.getPath('userData');
     const lockscreenPath = path.join(userDataPath, "/local_images/" + image.name);
 
-    const successful = changeSuspendedImage(lockscreenPath)
-    if (successful) {
-        handleGetLocalImages(event, image)
-
-    } else {
-        sendError("Error updating lockscreen")
-    }
+    changeSuspendedImage(
+        lockscreenPath,
+        () => {
+            getSuspendedImage().then(() => {
+                handleGetLocalImages("", "")
+            })
+        },
+        (error: any) => {
+            sendError("Error updating lockscreen.", 2500)
+        }
+    )
 
 }
 
 function handleRevertToDefaultLockscreen(event: any, message: any) {
     const defaultLockscreenPath = path.join(electron.app.getAppPath(), defaultRemarkableImage)
 
-    const successful = changeSuspendedImage(defaultLockscreenPath)
+    console.log(defaultLockscreenPath)
 
-    if (successful) {
-        handleGetLocalImages("", "")
-    } else {
-        sendError("Error reverting to default Lockscreen", 2500)
-    }
+    changeSuspendedImage(
+        defaultLockscreenPath.toString(),
+        () => {
+            getSuspendedImage().then(() => {
+                handleGetLocalImages("", "")
+            })
+        },
+        (error: any) => {
+            sendError("Error reverting to default Lockscreen", 2500)
+        }
+    )
 }
 
 export function sendError(message: string, timeout?: number) {

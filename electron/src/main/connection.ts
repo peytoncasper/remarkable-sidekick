@@ -46,14 +46,14 @@ export function connect(s: Settings) {
 
 }
 
-export function getSuspendedImage() {
+export async function getSuspendedImage() {
     if (ssh.isConnected()) {
         const userDataPath = electron.app.getPath('userData');
         const localLockscreen = path.join(userDataPath, "currentLockscreen.png");
 
         const remoteLockscreen = "/usr/share/remarkable/suspended.png"
 
-        ssh.getFile(localLockscreen, remoteLockscreen).then(function() {
+        await ssh.getFile(localLockscreen, remoteLockscreen).then(function() {
             const img = fs.readFileSync(localLockscreen, {encoding: 'base64'})
 
             global.browserWindow.webContents.send('asynchronous-message', {
@@ -71,16 +71,13 @@ export function getSuspendedImage() {
 
 }
 
-export function changeSuspendedImage(localImagePath: string): boolean {
+export function changeSuspendedImage(localImagePath: string, success: () => void, error: (error: any) => void): boolean {
     if (ssh && ssh.isConnected()) {
         const remoteLockscreen = "/usr/share/remarkable/suspended.png"
 
-        ssh.putFile(localImagePath, remoteLockscreen).then(function() {
-            return true
-        }).catch(function(error: any) {
-            console.log(error)
-            return false
-        })
+        ssh.putFile(localImagePath, remoteLockscreen)
+            .then(success)
+            .catch(error)
 
     } else {
         disconnect()

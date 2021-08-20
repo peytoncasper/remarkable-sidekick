@@ -11,10 +11,13 @@ import {useRecoilState} from "recoil";
 import {settingsAtom} from "_renderer/atoms/settings";
 import LockscreenManagement from "_renderer/LockscreenManagement";
 import logo from "_renderer/static/rms-icon-white.png";
+import {ErrorPopup} from "_renderer/components/Error";
+import {errorAtom} from "_renderer/atoms/error";
 
 
 function App() {
     const [settings, setSettings] = useRecoilState(settingsAtom);
+    const [error, setError] = useRecoilState(errorAtom);
 
     useEffect(() => {
         // if(!settings) {
@@ -62,6 +65,10 @@ function App() {
                             {/*        /!* Your content *!/*/}
                             {/*    </div>*/}
                             {/*</aside>*/}
+
+                            {
+                                error.message != "" ? <ErrorPopup/> : null
+                            }
                         </main>
                     </div>
                 </div>

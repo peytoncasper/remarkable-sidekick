@@ -30,6 +30,8 @@ function fontAwesomeLookup(name: string): string {
             return "fa-highlighter"
         case "check":
             return "fa-check"
+        case "times":
+            return "fa-times"
         default:
             return "fa-home"
     }

@@ -5,6 +5,8 @@ import * as fs from "fs";
 import {Path, StorageDetails} from "../common/storage";
 import {Image} from "../common/image";
 import Timeout = NodeJS.Timeout;
+import {sendError} from "./ipcConsumer";
+
 const {NodeSSH} = require('node-ssh')
 
 let settings:           Settings
@@ -22,12 +24,11 @@ export function connect(s: Settings) {
 
     updateStatus("connecting")
 
-
     ssh.connect({
         host: settings.host,
         username: settings.username,
         password: settings.password,
-        readyTimeout: 500,
+        readyTimeout: 3500,
         keepaliveInterval: 500,
         keepaliveCountMax: 1
     }).then(() => {
@@ -38,6 +39,7 @@ export function connect(s: Settings) {
         getSuspendedImage()
         getStorageStats()
     }).catch((error: any) => {
+        console.log(error)
         disconnect()
     })
 
@@ -52,7 +54,6 @@ export function getSuspendedImage() {
         const remoteLockscreen = "/usr/share/remarkable/suspended.png"
 
         ssh.getFile(localLockscreen, remoteLockscreen).then(function() {
-            console.debug("successfully download the suspended image")
             const img = fs.readFileSync(localLockscreen, {encoding: 'base64'})
 
             global.browserWindow.webContents.send('asynchronous-message', {
@@ -62,12 +63,30 @@ export function getSuspendedImage() {
             });
 
         }, function(error: any) {
-            console.error("error downloading the suspended image")
             console.log(error)
         })
     } else {
         disconnect()
     }
+
+}
+
+export function changeSuspendedImage(localImagePath: string): boolean {
+    if (ssh && ssh.isConnected()) {
+        const remoteLockscreen = "/usr/share/remarkable/suspended.png"
+
+        ssh.putFile(localImagePath, remoteLockscreen).then(function() {
+            return true
+        }).catch(function(error: any) {
+            console.log(error)
+            return false
+        })
+
+    } else {
+        disconnect()
+    }
+
+    return false
 
 }
 
@@ -124,6 +143,12 @@ function disconnect() {
 }
 
 function updateStatus(s: string) {
+    if (status == "connecting" && s == "disconnected") {
+        sendError("No Remarkable Device Found", 2500)
+    } else if (status == "connected" && s == "disconnected") {
+        sendError("Remarkable Disconnected", 2500)
+    }
+
     status = s
 
     global.browserWindow.webContents.send('asynchronous-message', {

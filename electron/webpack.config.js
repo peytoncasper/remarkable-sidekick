@@ -31,6 +31,7 @@ const commonConfig = {
             _public: srcPaths('public'),
             _renderer: srcPaths('src/renderer'),
             _utils: srcPaths('src/utils'),
+            _assets: srcPaths("src/assets")
         },
         extensions: ['.js', '.json', '.ts', '.tsx'],
     },
@@ -73,6 +74,12 @@ mainConfig.entry = './src/main/main.ts';
 mainConfig.target = 'electron-main';
 mainConfig.output.filename = 'main.bundle.js';
 mainConfig.plugins = [
+    new CopyPlugin({
+        patterns: [{
+            from: "src/assets/default_remarkable_lockscreen.png",
+            to: "assets/default_remarkable_lockscreen.png"
+        }]
+    }),
     new CopyPlugin({
         patterns: [
             {

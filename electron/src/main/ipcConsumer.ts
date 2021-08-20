@@ -7,6 +7,8 @@ import electron from "electron";
 import path from "path";
 import fs from "fs";
 import {uploadImage} from "./api";
+import {changeSuspendedImage} from "./connection";
+const defaultRemarkableImage = "assets/default_remarkable_lockscreen.png";
 
 const sharp = require('sharp');
 
@@ -41,6 +43,12 @@ export function handleIPCMessage(e: any, message: any) {
         case "upload_image":
             handleUploadImage(e, message)
             break;
+        case "change_lockscreen":
+            handleChangeLockscreen(e, message)
+            break;
+        case "revert_to_default_lockscreen":
+            handleRevertToDefaultLockscreen(e, message)
+            break;
     }
 }
 
@@ -74,7 +82,6 @@ function handleGetSuspendedScreen(event: any, message: any) {
 
 export function handleSaveImage(event: any, image: Image) {
     saveImage(image)
-    handleGetLocalImages(event, image)
 }
 
 export function saveImage(image: Image) {
@@ -87,7 +94,20 @@ export function saveImage(image: Image) {
 
     const fileName = imageFolder + image.name
 
-    fs.writeFileSync(fileName, image.data, 'base64')
+    let imgBuffer = Buffer.from(image.data, 'base64');
+    sharp(imgBuffer)
+        .resize(1404, 1872)
+        .png({quality: 30})
+        .greyscale(true)
+        .toBuffer()
+        .then((b: Buffer) => {
+            fs.writeFileSync(fileName, b)
+            handleGetLocalImages("", image)
+        }).catch((error: any) => {
+            console.log(error)
+            sendError("Error adding image", 4000)
+        })
+
 
 }
 
@@ -99,15 +119,18 @@ function handleGetLocalImages(event: any, message: any) {
         let images: Image[] = []
 
         const currentImagePath = path.join(userDataPath, "currentLockscreen.png");
-        const currentImage = fs.readFileSync(currentImagePath, 'base64')
-        images.push({
-            type: "image",
-            name: "currentLockscreen.png",
-            data: currentImage
-        })
+
+        if (fs.existsSync(currentImagePath)) {
+            const currentImage = fs.readFileSync(currentImagePath, 'base64')
+            images.push({
+                type: "image",
+                name: "currentLockscreen.png",
+                data: currentImage
+            })
+        }
 
         for (const p of files) {
-            const name = path.parse(localImages + p).name
+            const imagePath = path.parse(localImages + p)
 
             await sharp(localImages + p)
                 .resize(250, 333)
@@ -115,7 +138,7 @@ function handleGetLocalImages(event: any, message: any) {
                 .then((b: Buffer) => {
                     images.push({
                         type: "image",
-                        name: name,
+                        name: imagePath.name + imagePath.ext,
                         data: b.toString("base64")
                     })
                 })
@@ -139,4 +162,38 @@ function handleUploadImage(event: any, message: any) {
         name: "currentLockscreen.png",
         data: currentImage
     })
+}
+
+function handleChangeLockscreen(event: any, image: Image) {
+    const userDataPath = electron.app.getPath('userData');
+    const lockscreenPath = path.join(userDataPath, "/local_images/" + image.name);
+
+    const successful = changeSuspendedImage(lockscreenPath)
+    if (successful) {
+        handleGetLocalImages(event, image)
+
+    } else {
+        sendError("Error updating lockscreen")
+    }
+
+}
+
+function handleRevertToDefaultLockscreen(event: any, message: any) {
+    const defaultLockscreenPath = path.join(electron.app.getAppPath(), defaultRemarkableImage)
+
+    const successful = changeSuspendedImage(defaultLockscreenPath)
+
+    if (successful) {
+        handleGetLocalImages("", "")
+    } else {
+        sendError("Error reverting to default Lockscreen", 2500)
+    }
+}
+
+export function sendError(message: string, timeout?: number) {
+    global.browserWindow.webContents.send('asynchronous-message', {
+        type: "error",
+        message: message,
+        timeout: timeout ? timeout : 5000
+    });
 }

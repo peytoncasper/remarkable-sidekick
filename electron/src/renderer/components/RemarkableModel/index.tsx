@@ -74,7 +74,6 @@ export const RemarkableModel: React.FC<RemarkableProps> = (props) => {
             <div className={"w-10 h-full bg-gray-300 rounded-bl-lg rounded-tl-lg"}/>
             <div id="overlayContainer" className={"w-full border-gray-300 border-2 m-8 mb-20"} style={{position: "relative"}}>
                 <Overlay className={ mouseOver ? "bg-gray-300 bg-opacity-50" : ""}/>
-                {console.log(props.image)}
                 {props.image ? <img className={"w-full h-full max-w-full max-h-full"} src={"data:image/png;base64," + props.image}/> : null}
 
                 {mouseOver ?

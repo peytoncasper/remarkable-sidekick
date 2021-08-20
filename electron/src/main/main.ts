@@ -3,7 +3,6 @@ const { app, BrowserWindow } = require('electron')
 import * as url from 'url';
 const path = require('path')
 const { ipcMain } = require('electron')
-const defaultRemarkableImage = "../assets/default_remarkable_lockscreen";
 
 export function createWindow() {
     return new BrowserWindow({

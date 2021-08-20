@@ -17,5 +17,6 @@ export const Icon = styled.i<IconProps>`
         return '30px';
     }
   }};
+  cursor: pointer;
 `
 

@@ -11,6 +11,7 @@ import {connectionStatusAtom} from "_renderer/atoms/connectionStatus";
 import {StorageDetails} from "_/common/storage";
 import {storageDetailsAtom} from "_renderer/atoms/storageDetails";
 import {localImagesAtom} from "_renderer/atoms/localImagesAtom";
+import {Error, errorAtom} from "_renderer/atoms/error";
 // const { ipcRenderer } = require('electron')
 
 export interface IPCHandler {
@@ -20,6 +21,8 @@ export interface IPCHandler {
     handleSuspendedImage: (event: Image) => void;
     handleStorageDetails: (event: StorageDetails) => void;
     handleLocalImages: (event: LocalImages) => void;
+    handleError: (event: Error) => void;
+
 }
 
 export class IPCConsumer {
@@ -59,6 +62,8 @@ export class IPCConsumer {
             case "local_images":
                 this.handler.handleLocalImages(arg)
                 break;
+            case "error":
+                this.handler.handleError(arg)
         }
     }
 }
@@ -70,7 +75,7 @@ export function IPCListener() {
     const [suspendedImage, setSuspendedImage] = useRecoilState(suspendedImageAtom);
     const [storageDetails, setStorageDetails] = useRecoilState(storageDetailsAtom);
     const [localImages, setLocalImages] = useRecoilState(localImagesAtom);
-
+    const [error, setError] = useRecoilState(errorAtom);
 
     useEffect(() => {
 
@@ -88,12 +93,13 @@ export function IPCListener() {
                 setSuspendedImage(event)
             }),
             handleStorageDetails: ((event: StorageDetails) => {
-                console.log(event)
-
                 setStorageDetails(event)
             }),
             handleLocalImages: ((event: LocalImages) => {
                 setLocalImages(event.images)
+            }),
+            handleError: ((event: Error) => {
+                setError(event)
             })
         }
 

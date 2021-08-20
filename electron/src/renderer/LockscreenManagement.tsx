@@ -48,6 +48,20 @@ export function LockscreenManagement() {
         }
     }
 
+    function changeLockscreen(imageName: string) {
+        // console.log(imageName)
+        window.api.sendAsynchronousMessage({
+            type: "change_lockscreen",
+            name: imageName
+        })
+    }
+
+    function revertLockscreen() {
+        window.api.sendAsynchronousMessage({
+            type: "revert_to_default_lockscreen"
+        })
+    }
+
     return (
         <div className="w-full">
             <header className="relative h-16 bg-white flex-1 flex items-center justify-between">
@@ -103,6 +117,15 @@ export function LockscreenManagement() {
                         id={"saveSettings"}
                         className="shadow focus:shadow-outline focus:outline-none text-white font-bold py-1 px-2 rounded"
                         style={{background: "#08DAAD"}}
+                        onClick={revertLockscreen}
+                    >
+                        Revert
+                    </button>
+
+                    <button
+                        id={"saveSettings"}
+                        className="shadow focus:shadow-outline focus:outline-none text-white font-bold py-1 px-2 rounded"
+                        style={{background: "#08DAAD"}}
                         onClick={handleUploadImage}
                     >
                         Upload
@@ -119,20 +142,21 @@ export function LockscreenManagement() {
                 </div>
             </header>
             <div className="p-10 flex ">
-                <ul role="list" className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8 h-full w-full">
+                <ul role="list" className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8 h-full w-full" >
                     {localImages.map((image) => (
-                        <li key={image.name} className="relative" style={{width: 250, height: 333}}>
+                        <li key={image.name} onClick={() => {changeLockscreen(image.name)}} className="relative" style={{width: 250, height: 333, cursor: "pointer"}}>
                             <div  className=" group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500 overflow-hidden">
                                 <img src={"data:image/png;base64," + image.data} alt="" className="object-cover pointer-events-none group-hover:opacity-75" />
                                 <button type="button" className="absolute inset-0 focus:outline-none">
                                     <span className="sr-only">View details for {image.name}</span>
                                 </button>
                             </div>
-                            <div className="w-full transform flex flex-row justify-end px-2 -translate-y-10">
+                            <div className="w-full transform flex flex-row justify-end px-2 -translate-y-10" style={{cursor: "pointer"}}>
                                 <div className={mergeClassNames(
                                     image.name == "currentLockscreen.png" ? "bg-indigo-400" : "border-2 bg-gray-200 border-gray-300",
                                     "rounded-full h-8 w-8 flex items-center justify-center "
                                     )}
+                                     style={{cursor: "pointer"}}
                                 >
                                     {image.name == "currentLockscreen.png" ? <SolidIcon name="check" fontSize="xx-small" className="text-white"/> : null}
 

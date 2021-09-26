@@ -15,6 +15,8 @@ export const Icon = styled.i<IconProps>`
         return '24px';
       case 'x-large':
         return '30px';
+      case '2x-large':
+        return "48px";
     }
   }};
   cursor: pointer;

@@ -76,14 +76,14 @@ export const RemarkableModel: React.FC<RemarkableProps> = (props) => {
                 <Overlay className={ mouseOver ? "bg-gray-300 bg-opacity-50" : ""}/>
                 {props.image ? <img className={"w-full h-full max-w-full max-h-full"} src={"data:image/png;base64," + props.image}/> : null}
 
-                {mouseOver ?
-                    <OverlayButtonContainer>
-                        <UploadLabel htmlFor="file-upload" className="custom-file-upload bg-gray-300 hover:bg-gray-400 rounded-lg centered">
-                            Change Lockscreen
-                        </UploadLabel>
-                        <FileUpload type="file" id="file-upload"/>
-                    </OverlayButtonContainer> : null
-                }
+                {/*{mouseOver ?*/}
+                {/*    <OverlayButtonContainer>*/}
+                {/*        <UploadLabel htmlFor="file-upload" className="custom-file-upload bg-gray-300 hover:bg-gray-400 rounded-lg centered">*/}
+                {/*            Change Lockscreen*/}
+                {/*        </UploadLabel>*/}
+                {/*        <FileUpload type="file" id="file-upload"/>*/}
+                {/*    </OverlayButtonContainer> : null*/}
+                {/*}*/}
             </div>
         </div>
     )

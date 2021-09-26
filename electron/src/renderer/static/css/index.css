@@ -10,9 +10,18 @@ body {
     margin: 0;
     height:100%;
     width: 100%;
+    background-color: #1D1F20;
 }
 
 #root {
     height: 100%;
     width: 100%;
+}
+
+.bg-teal {
+    background-color: #58CFA5;
+}
+
+.text-teal {
+    color: #58CFA5;
 }

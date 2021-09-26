@@ -32,6 +32,8 @@ function fontAwesomeLookup(name: string): string {
             return "fa-check"
         case "times":
             return "fa-times"
+        case "file-image":
+            return "fa-file-image"
         default:
             return "fa-home"
     }

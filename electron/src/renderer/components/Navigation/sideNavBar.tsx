@@ -5,7 +5,7 @@ import {
 } from "react-router-dom";
 import * as React from "react";
 import {useEffect} from "react";
-import logo from "_renderer/static/rms-icon-white.png";
+import logo from "_renderer/static/logo-icon-white.png";
 interface SideNavBarProps {
     path: string
 }
@@ -14,18 +14,17 @@ export const SideNavBar: React.FC<SideNavBarProps> = (props) => {
     const location = useLocation();
 
     return (
-        <nav aria-label="Sidebar" className="hidden md:block md:flex-shrink-0 md:bg-gray-800 md:overflow-y-auto">
-            {/* Logo area */}
+        <nav aria-label="Sidebar" style={{background: "#141415"}} className="hidden md:block md:flex-shrink-0 md:bg-gray-800 md:overflow-y-auto">
             <div className="absolute inset-y-0 left-0 flex-shrink-1 md:static md:flex-shrink-0">
                 <a
                     href="#"
-                    className="flex items-center justify-center h-16 w-16 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-600 md:w-20"
-                    style={{background: "#08DAAD"}}
+                    className="flex items-center justify-center h-16 w-16 md:w-20"
+                    style={{background: "#141415", cursor: "auto"}}
                 >
                     <img
                         className="h-8 w-auto"
                         src={logo}
-                        alt="Workflow"
+                        alt="Remarkable Sidekick Logo"
                     />
                 </a>
             </div>
@@ -48,7 +47,7 @@ export const SideNavBar: React.FC<SideNavBarProps> = (props) => {
                 <Link
                     to="/"
                     className={mergeClassNames(
-                        location.pathname == "/" ? 'bg-gray-900 text-white' : 'text-gray-400 hover:bg-gray-700',
+                        location.pathname == "/" ? 'text-teal' : 'text-white',
                         'flex-shrink-0 inline-flex items-center justify-center h-14 w-14 rounded-lg'
                     )}
                 >
@@ -59,7 +58,7 @@ export const SideNavBar: React.FC<SideNavBarProps> = (props) => {
                 <Link
                     to="/lockscreen"
                     className={mergeClassNames(
-                        location.pathname == "/lockscreen" ? 'bg-gray-900 text-white' : 'text-gray-400 hover:bg-gray-700',
+                        location.pathname == "/lockscreen" ? 'text-teal' : 'text-white',
                         'flex-shrink-0 inline-flex items-center justify-center h-14 w-14 rounded-lg'
                     )}
                 >
@@ -70,7 +69,7 @@ export const SideNavBar: React.FC<SideNavBarProps> = (props) => {
                 <Link
                     to="/highlights"
                     className={mergeClassNames(
-                        location.pathname == "/highlights" ? 'bg-gray-900 text-white' : 'text-gray-400 hover:bg-gray-700',
+                        location.pathname == "/highlights" ? 'text-teal' : 'text-white',
                         'flex-shrink-0 inline-flex items-center justify-center h-14 w-14 rounded-lg'
                     )}
                 >
@@ -82,7 +81,7 @@ export const SideNavBar: React.FC<SideNavBarProps> = (props) => {
                 <Link
                     to="/settings"
                     className={mergeClassNames(
-                        location.pathname == "/settings" ? 'bg-gray-900 text-white' : 'text-gray-400 hover:bg-gray-700',
+                        location.pathname == "/settings" ? 'text-teal' : 'text-white',
                         'flex-shrink-0 inline-flex items-center justify-center h-14 w-14 rounded-lg'
                     )}
                 >

@@ -6,6 +6,7 @@ import {Path, StorageDetails} from "../common/storage";
 import {Image} from "../common/image";
 import Timeout = NodeJS.Timeout;
 import {sendError} from "./ipcConsumer";
+import log from "electron-log";
 
 const {NodeSSH} = require('node-ssh')
 
@@ -141,9 +142,13 @@ function disconnect() {
 
 function updateStatus(s: string) {
     if (status == "connecting" && s == "disconnected") {
-        sendError("No Remarkable Device Found", 2500)
+        const msg = "No Remarkable Device Found"
+        log.error(msg)
+        sendError(msg, 2500)
     } else if (status == "connected" && s == "disconnected") {
-        sendError("Remarkable Disconnected", 2500)
+        const msg = "Remarkable Disconnected"
+        log.error(msg)
+        sendError(msg, 2500)
     }
 
     status = s
@@ -154,5 +159,19 @@ function updateStatus(s: string) {
     });
 }
 
-
-
+export function reboot() {
+    if (ssh.isConnected()) {
+        ssh.exec('systemctl', ['restart', 'xochitl'], {
+            cwd: '/',
+            stream: 'stdout'
+        }).then(function (result: string) {
+            disconnect()
+        }).catch(function(error: any) {
+            const msg = "error rebooting Remarkable device"
+            log.error(msg, error)
+            sendError(msg, error)
+        })
+    } else {
+        disconnect()
+    }
+}

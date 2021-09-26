@@ -18,7 +18,6 @@ export function Home() {
 
 
 
-
     return (
         <div className="w-full flex">
             <div className="flex flex-1 h-screen">

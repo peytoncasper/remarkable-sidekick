@@ -36,7 +36,7 @@ function App() {
         <HashRouter >
             <IPCListener/>
             <div className={"h-screen flex flex-col"}>
-                <div className="h-screen overflow-hidden flex flex-col">
+                <div className="h-full flex flex-col">
 
                     <div className="min-h-0 flex-1 flex overflow-hidden">
                         <SideNavBar path={"/"}/>

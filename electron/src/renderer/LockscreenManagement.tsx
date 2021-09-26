@@ -10,6 +10,7 @@ import TopNavBar from "_renderer/components/Navigation/topNavBar";
 import {SolidIcon} from "_renderer/components/FontAwesome/solid";
 import {localImagesAtom} from "_renderer/atoms/localImagesAtom";
 import {FileUpload, UploadLabel} from "_renderer/components/RemarkableModel/styles";
+import {FileDropzone} from "_renderer/components/FileDropzone";
 
 
 export function LockscreenManagement() {
@@ -63,26 +64,26 @@ export function LockscreenManagement() {
     }
 
     return (
-        <div className="w-full">
-            <header className="relative h-16 bg-white flex-1 flex items-center justify-between">
+        <div className="w-full flex flex-col">
+            <header className="h-16 bg-white flex-1 flex items-center justify-between">
 
 
                 {/* Desktop nav area */}
                 <div className="md:min-w-0   flex-1 flex items-center">
-                    <div className="relative text-gray-400 focus-within:text-gray-500">
-                        <label htmlFor="search" className="sr-only">
-                            Search
-                        </label>
-                        <input
-                            id="search"
-                            type="search"
-                            placeholder="Search"
-                            className="block w-full border-transparent pl-12 placeholder-gray-500 focus:border-transparent sm:text-sm focus:ring-0"
-                        />
-                        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center justify-center pl-4">
-                            <SolidIcon name={"search"} className={"h-5 w-5"} aria-hidden="true"/>
-                        </div>
-                    </div>
+                    {/*<div className="relative text-gray-400 focus-within:text-gray-500">*/}
+                    {/*    <label htmlFor="search" className="sr-only">*/}
+                    {/*        Search*/}
+                    {/*    </label>*/}
+                    {/*    <input*/}
+                    {/*        id="search"*/}
+                    {/*        type="search"*/}
+                    {/*        placeholder="Search"*/}
+                    {/*        className="block w-full border-transparent pl-12 placeholder-gray-500 focus:border-transparent sm:text-sm focus:ring-0"*/}
+                    {/*    />*/}
+                    {/*    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center justify-center pl-4">*/}
+                    {/*        <SolidIcon name={"search"} className={"h-5 w-5"} aria-hidden="true"/>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
 
                 </div>
                 <div className="flex-1">
@@ -92,23 +93,23 @@ export function LockscreenManagement() {
                                 style={{cursor: "pointer"}}
                                 className={mergeClassNames(
                                     galleryView == "local" ? "border-indigo-500 text-indigo-600" : "text-gray-500 hover:text-gray-700 hover:border-gray-300",
-                                    'w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm')
+                                    'ml-18 w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm')
                                 }
                                 aria-current='page'
                                 onClick={() => {setGalleryView("local")}}
                             >
                                 Local
                             </a>
-                            <a
-                                style={{cursor: "pointer"}}
-                                className={mergeClassNames(
-                                    galleryView == "gallery" ? "border-indigo-500 text-indigo-600" : "text-gray-500 hover:text-gray-700 hover:border-gray-300",
-                                    'w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm')
-                                    }
-                                onClick={() => {setGalleryView("gallery")}}
-                            >
-                                Gallery
-                            </a>
+                            {/*<a*/}
+                            {/*    style={{cursor: "pointer"}}*/}
+                            {/*    className={mergeClassNames(*/}
+                            {/*        galleryView == "gallery" ? "border-indigo-500 text-indigo-600" : "text-gray-500 hover:text-gray-700 hover:border-gray-300",*/}
+                            {/*        'w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm')*/}
+                            {/*        }*/}
+                            {/*    onClick={() => {setGalleryView("gallery")}}*/}
+                            {/*>*/}
+                            {/*    Gallery*/}
+                            {/*</a>*/}
                         </nav>
                     </div>
                 </div>
@@ -141,33 +142,59 @@ export function LockscreenManagement() {
                     <FileUpload type="file" id="file-upload" onChange={saveImage}/>
                 </div>
             </header>
-            <div className="p-10 flex ">
-                <ul role="list" className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8 h-full w-full" >
-                    {localImages.map((image) => (
-                        <li key={image.name} onClick={() => {changeLockscreen(image.name)}} className="relative" style={{width: 250, height: 333, cursor: "pointer"}}>
-                            <div  className=" group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500 overflow-hidden">
-                                <img src={"data:image/png;base64," + image.data} alt="" className="object-cover pointer-events-none group-hover:opacity-75" />
-                                <button type="button" className="absolute inset-0 focus:outline-none">
-                                    <span className="sr-only">View details for {image.name}</span>
-                                </button>
-                            </div>
-                            <div className="w-full transform flex flex-row justify-end px-2 -translate-y-10" style={{cursor: "pointer"}}>
-                                <div className={mergeClassNames(
-                                    image.name == "currentLockscreen.png" ? "bg-indigo-400" : "border-2 bg-gray-200 border-gray-300",
-                                    "rounded-full h-8 w-8 flex items-center justify-center "
-                                    )}
-                                     style={{cursor: "pointer"}}
-                                >
-                                    {image.name == "currentLockscreen.png" ? <SolidIcon name="check" fontSize="xx-small" className="text-white"/> : null}
 
-                                </div>
-                            </div>
-                            <p className="mt-2 block text-sm font-medium text-gray-900 truncate pointer-events-none">{image.name}</p>
-                            {/*<p className="block text-sm font-medium text-gray-500 pointer-events-none">{file.size}</p>*/}
-                        </li>
-                    ))}
-                </ul>
-            </div>
+            {localImages.length > 0 ?
+                <div className="h-full flex">
+                    <div className="flex flex-1 items-center justify-center">
+                        <RemarkableModel image={localImages[0].data}/>
+                    </div>
+                    <div className="flex flex-1 ">
+                        <FileDropzone/>
+                    </div>
+                </div> : <div className="h-full">
+                </div>
+            }
+
+            {/*<div className="h-full flex">*/}
+
+            {/*    <div className="flex flex-1 items-center justify-center">*/}
+            {/*        {localImages.length > 0 ?*/}
+            {/*            <div className=" group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500 overflow-hidden"*/}
+            {/*                 style={{width: 250, height: 333, cursor: "pointer"}}>*/}
+            {/*                <img src={"data:image/png;base64," + localImages[0].data} alt="" className="object-cover pointer-events-none group-hover:opacity-75" />*/}
+            {/*            </div> : null*/}
+            {/*        }*/}
+            {/*    </div>*/}
+            {/*    <div className="flex-1">*/}
+
+            {/*    </div>*/}
+
+                {/*<ul role="list" className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8 h-full w-full" >*/}
+                {/*    {localImages.map((image) => (*/}
+                {/*        <li key={image.name} onClick={() => {changeLockscreen(image.name)}} className="relative" style={{width: 250, height: 333, cursor: "pointer"}}>*/}
+                {/*            <div  className=" group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500 overflow-hidden">*/}
+                {/*                <img src={"data:image/png;base64," + image.data} alt="" className="object-cover pointer-events-none group-hover:opacity-75" />*/}
+                {/*                <button type="button" className="absolute inset-0 focus:outline-none">*/}
+                {/*                    <span className="sr-only">View details for {image.name}</span>*/}
+                {/*                </button>*/}
+                {/*            </div>*/}
+                {/*            <div className="w-full transform flex flex-row justify-end px-2 -translate-y-10" style={{cursor: "pointer"}}>*/}
+                {/*                <div className={mergeClassNames(*/}
+                {/*                    image.name == "currentLockscreen.png" ? "bg-indigo-400" : "border-2 bg-gray-200 border-gray-300",*/}
+                {/*                    "rounded-full h-8 w-8 flex items-center justify-center "*/}
+                {/*                    )}*/}
+                {/*                     style={{cursor: "pointer"}}*/}
+                {/*                >*/}
+                {/*                    {image.name == "currentLockscreen.png" ? <SolidIcon name="check" fontSize="xx-small" className="text-white"/> : null}*/}
+
+                {/*                </div>*/}
+                {/*            </div>*/}
+                {/*            <p className="mt-2 block text-sm font-medium text-gray-900 truncate pointer-events-none">{image.name}</p>*/}
+                {/*            /!*<p className="block text-sm font-medium text-gray-500 pointer-events-none">{file.size}</p>*!/*/}
+                {/*        </li>*/}
+                {/*    ))}*/}
+                {/*</ul>*/}
+            {/*</div>*/}
         </div>
 
     )

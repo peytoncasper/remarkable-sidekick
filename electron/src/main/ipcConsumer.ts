@@ -7,9 +7,10 @@ import electron from "electron";
 import path from "path";
 import fs from "fs";
 import {uploadImage} from "./api";
-import {changeSuspendedImage, getSuspendedImage} from "./connection";
+import {changeSuspendedImage, getSuspendedImage, reboot} from "./connection";
 const defaultRemarkableImage = "assets/default_remarkable_lockscreen.png";
 
+const log = require('electron-log');
 const sharp = require('sharp');
 
 let settings = require("./settings");
@@ -104,8 +105,9 @@ export function saveImage(image: Image) {
             fs.writeFileSync(fileName, b)
             handleGetLocalImages("", image)
         }).catch((error: any) => {
-            console.log(error)
-            sendError("Error adding image", 4000)
+            const msg = "error adding image"
+            log.error(msg, error)
+            sendError(msg, 4000)
         })
 
 
@@ -173,10 +175,13 @@ function handleChangeLockscreen(event: any, image: Image) {
         () => {
             getSuspendedImage().then(() => {
                 handleGetLocalImages("", "")
+                reboot()
             })
         },
         (error: any) => {
-            sendError("Error updating lockscreen.", 2500)
+            const msg = "error updating lockscreen"
+            log.error(msg, error)
+            sendError(msg, 2500)
         }
     )
 
@@ -185,22 +190,24 @@ function handleChangeLockscreen(event: any, image: Image) {
 function handleRevertToDefaultLockscreen(event: any, message: any) {
     const defaultLockscreenPath = path.join(electron.app.getAppPath(), defaultRemarkableImage)
 
-    console.log(defaultLockscreenPath)
-
     changeSuspendedImage(
         defaultLockscreenPath.toString(),
         () => {
             getSuspendedImage().then(() => {
                 handleGetLocalImages("", "")
+                reboot()
             })
         },
         (error: any) => {
-            sendError("Error reverting to default Lockscreen", 2500)
+            const msg = "error reverting to default lockscreen"
+            log.error(msg, error)
+            sendError(msg, 2500)
         }
     )
 }
 
 export function sendError(message: string, timeout?: number) {
+
     global.browserWindow.webContents.send('asynchronous-message', {
         type: "error",
         message: message,

@@ -45,8 +45,8 @@ function fontAwesomeLookup(name: string): string {
     }
 }
 
-export const SolidIcon : React.FunctionComponent<IconComponentProps> = (props) => {
-    let className = mergeClassNames("fas", fontAwesomeLookup(props.name))
+export const RegularIcon : React.FunctionComponent<IconComponentProps> = (props) => {
+    let className = mergeClassNames("far", fontAwesomeLookup(props.name))
 
     if (props.className) {
         className = mergeClassNames(props.className, className)

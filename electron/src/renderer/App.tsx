@@ -13,6 +13,7 @@ import LockscreenManagement from "_renderer/LockscreenManagement";
 import logo from "_renderer/static/rms-icon-white.png";
 import {ErrorPopup} from "_renderer/components/Error";
 import {errorAtom} from "_renderer/atoms/error";
+import Highlights from "_renderer/Highlights";
 
 
 function App() {
@@ -44,7 +45,7 @@ function App() {
                             <Switch>
                                 <Route path="/lockscreen" component={LockscreenManagement}/>
                                 <Route path="/settings" component={Settings}/>
-                                <Route path="/highlights" component={Settings}/>
+                                <Route path="/highlights" component={Highlights}/>
                                 <Route path="/" component={Home}/>
                             </Switch>
 

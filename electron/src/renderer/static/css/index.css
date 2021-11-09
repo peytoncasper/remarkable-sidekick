@@ -10,7 +10,7 @@ body {
     margin: 0;
     height:100%;
     width: 100%;
-    background-color: #1D1F20;
+    background-color: #F4F4F4;
 }
 
 #root {
@@ -24,4 +24,8 @@ body {
 
 .text-teal {
     color: #58CFA5;
+}
+
+.text-icon-gray {
+    color: #A3A1A1;
 }

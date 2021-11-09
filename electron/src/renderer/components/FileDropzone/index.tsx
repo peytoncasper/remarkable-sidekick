@@ -10,15 +10,15 @@ export function FileDropzone() {
     const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
 
     return (
-        <div className="flex flex-1 p-20">
-            <div className="w-full h-full flex items-center justify-center border-dashed border-4 border-gray-200 bg-gray-100 rounded-3xl" {...getRootProps()}>
+        <div className="flex flex-1 py-40 px-24">
+            <div className="w-full h-full flex items-center justify-center border-dashed border-2 border-gray-300 bg-gray-100 rounded-xl" {...getRootProps()}>
                 <input {...getInputProps()} />
                 {
                     isDragActive ?
                         <p>Drop the files here ...</p> :
                         <div className="flex items-center justify-center flex-col">
                             <SolidIcon fontSize="2x-large" name="file-image" className="text-gray-500"/>
-                            <div className="text-bold">Drag & drop a file to upload</div>
+                            <div className="text-gray-600 m-4">Drag & drop or click to upload a PNG or JPEG image</div>
                         </div>
                 }
             </div>

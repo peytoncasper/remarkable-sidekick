@@ -39,6 +39,7 @@ export function connect(s: Settings) {
 
         getSuspendedImage()
         getStorageStats()
+        indexUserFiles()
     }).catch((error: any) => {
         console.log(error)
         disconnect()
@@ -170,6 +171,56 @@ export function reboot() {
             const msg = "error rebooting Remarkable device"
             log.error(msg, error)
             sendError(msg, error)
+        })
+    } else {
+        disconnect()
+    }
+}
+
+export function indexUserFiles() {
+    if (ssh.isConnected()) {
+        ssh.exec('ls', [], {
+            cwd: '/home/root/.local/share/remarkable/xochitl',
+            stream: 'stdout'
+        }).then(function (result: string) {
+
+            console.log(result)
+
+            // const output = result.split('\n').map((line) => {
+            //     return line.split(" ").filter((word) => {
+            //         if(word != ' ')
+            //             return word
+            //     })
+            // })
+
+            // let paths: Path[] = []
+            //
+            // let usedSpace = 0
+            // let availableSpace = 0
+            //
+            // for (let i = 1; i < output.length; i++) {
+            //     const o = output[i]
+            //     const pathUsed = parseFloat(o[2])
+            //     const pathAvailable = parseFloat(o[3])
+            //
+            //     usedSpace += pathUsed
+            //     availableSpace += pathAvailable
+            //
+            //     paths.push({
+            //         used:       pathUsed,
+            //         available:  pathAvailable,
+            //         path:       o[5],
+            //
+            //     })
+            // }
+            //
+            // global.browserWindow.webContents.send('asynchronous-message', {
+            //     type: "storage_details",
+            //     used: usedSpace,
+            //     available: availableSpace,
+            //     paths
+            // });
+
         })
     } else {
         disconnect()

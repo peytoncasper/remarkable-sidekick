@@ -57,7 +57,7 @@ export function Disconnected() {
             </div>
 
             <button
-                className="flex flex-1 rounded bg-green-400 hover:bg-green-500 p-2 font-bold m-auto"
+                className="flex flex-1 rounded-md bg-green-400 hover:bg-green-500 p-2 font-bold w-48 m-auto"
                 onClick={(e) => {e.preventDefault(); handleConnectClick()}}
             >
                 {
@@ -70,7 +70,7 @@ export function Disconnected() {
                         </svg>
                     </div> : null
                 }
-                <div className="text-white">
+                <div className="text-white w-full text-center">
                     {connectionSwitch(connectionStatus.status)}
                 </div>
             </button>

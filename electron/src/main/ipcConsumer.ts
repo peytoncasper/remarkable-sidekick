@@ -61,7 +61,16 @@ export function handleIPCMessage(e: any, message: any) {
 }
 
 function handleInit() {
-    fs.copyFileSync(path.join(electron.app.getAppPath(), "default_remarkable_lockscreen.png"), path.join(homeDir, "default_remarkable_lockscreen.png"))
+    let appPath = electron.app.getAppPath()
+
+    // Quick fix for development which seems to include build/ but a distributable does not
+    if (appPath.includes("build")) {
+        appPath = path.join(appPath, "default_remarkable_lockscreen.png")
+    } else {
+        appPath = path.join(appPath, "build/default_remarkable_lockscreen.png")
+    }
+
+    fs.copyFileSync(appPath, path.join(homeDir, "default_remarkable_lockscreen.png"))
 
     initLockscreenData()
     initSettings()

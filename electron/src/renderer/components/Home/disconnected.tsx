@@ -2,7 +2,6 @@ import * as React from "react";
 import RemarkableModel from "_renderer/components/RemarkableModel";
 import {useEffect} from "react";
 import {useRecoilState} from "recoil";
-import {suspendedImageAtom} from "_renderer/atoms/suspendedImage";
 import {connectionStatusAtom} from "_renderer/atoms/connectionStatus";
 import {storageDetailsAtom} from "_renderer/atoms/storageDetails";
 import {mergeClassNames} from "_renderer/components/utils";

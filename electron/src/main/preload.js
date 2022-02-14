@@ -31,6 +31,8 @@ contextBridge.exposeInMainWorld('api', {
     disconnect: (callback) => {
         ipcRenderer.removeAllListeners("asynchronous-reply")
         ipcRenderer.removeAllListeners("asynchronous-message")
+        ipcRenderer.removeAllListeners("synchronous-reply")
+        ipcRenderer.removeAllListeners("synchronous-message")
     },
 })
 

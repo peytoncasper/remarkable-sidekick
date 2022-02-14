@@ -1,5 +1,4 @@
 import * as React from "react";
-import TopNavBar from "./components/Navigation/topNavBar";
 import SideNavBar from "./components/Navigation/sideNavBar";
 import {Route, Switch} from "react-router";
 import {HashRouter} from "react-router-dom";
@@ -10,27 +9,30 @@ import {useEffect} from "react";
 import {useRecoilState} from "recoil";
 import {settingsAtom} from "_renderer/atoms/settings";
 import LockscreenManagement from "_renderer/LockscreenManagement";
-import logo from "_renderer/static/rms-icon-white.png";
 import {ErrorPopup} from "_renderer/components/Error";
 import {errorAtom} from "_renderer/atoms/error";
 import Highlights from "_renderer/Highlights";
+import {successMessageAtom} from "_renderer/atoms/success";
+import {SuccessPopup} from "_renderer/components/Success";
 
 
 function App() {
     const [settings, setSettings] = useRecoilState(settingsAtom);
     const [error, setError] = useRecoilState(errorAtom);
+    const [successMessage, setSuccessMessage] = useRecoilState(successMessageAtom);
 
     useEffect(() => {
-        // if(!settings) {
-
-        window.api.sendAsynchronousMessage({
-            type: "get_settings"
-        })
-
-        window.api.sendAsynchronousMessage({
-            type: "get_local_images"
-        })
-        // }
+        // window.api.sendAsynchronousMessage({
+        //     type: "get_settings"
+        // })
+        //
+        // window.api.sendAsynchronousMessage({
+        //     type: "get_local_images"
+        // })
+        //
+        // window.api.sendAsynchronousMessage({
+        //     type: "get_index"
+        // })
     }, [])
 
     return (
@@ -49,26 +51,11 @@ function App() {
                                 <Route path="/" component={Home}/>
                             </Switch>
 
-                            {/*/!* Primary column *!/*/}
-                            {/*<section*/}
-                            {/*    aria-labelledby="primary-heading"*/}
-                            {/*    className="min-w-0 flex-1 h-full flex flex-col overflow-hidden lg:order-last"*/}
-                            {/*>*/}
-                            {/*    <h1 id="primary-heading" className="sr-only">*/}
-                            {/*        Home*/}
-                            {/*    </h1>*/}
-                            {/*    /!* Your content *!/*/}
-                            {/*</section>*/}
-
-                            {/*/!* Secondary column (hidden on smaller screens) *!/*/}
-                            {/*<aside className="hidden lg:block lg:flex-shrink-0 lg:order-first">*/}
-                            {/*    <div className="h-full relative flex flex-col w-96 border-r border-gray-200 bg-gray-100">*/}
-                            {/*        /!* Your content *!/*/}
-                            {/*    </div>*/}
-                            {/*</aside>*/}
-
                             {
                                 error.message != "" ? <ErrorPopup/> : null
+                            }
+                            {
+                                successMessage.message != "" ? <SuccessPopup/> : null
                             }
                         </main>
                     </div>

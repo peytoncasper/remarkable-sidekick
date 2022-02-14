@@ -7,8 +7,11 @@ import electron from "electron";
 import path from "path";
 import fs from "fs";
 import {uploadImage} from "./api";
-import {changeSuspendedImage, getSuspendedImage, reboot} from "./connection";
-const defaultRemarkableImage = "assets/default_remarkable_lockscreen.png";
+import {changeSuspendedImage, reboot, updateStatus} from "./connection";
+import {getIndex} from "./index";
+import {initLockscreenData, syncLockscreen} from "./lockscreen";
+import {homeDir, initSettings, sendSettings} from "./settings";
+const defaultRemarkableImage = path.join(homeDir, "default_remarkable_lockscreen.png");
 
 const log = require('electron-log');
 const sharp = require('sharp');
@@ -17,8 +20,6 @@ let settings = require("./settings");
 let remarkable = require("./connection")
 
 export function handleIPCMessage(e: any, message: any) {
-    // console.debug(message)
-
     switch(message.type) {
         case "get_device_settings":
             handleGetDeviceStats(e, message)
@@ -32,8 +33,11 @@ export function handleIPCMessage(e: any, message: any) {
         case "connect":
             handleConnect(e, message)
             break;
-        case "get_suspended_image":
-            handleGetSuspendedScreen(e, message)
+        case "init":
+            handleInit()
+            break;
+        case "get_lockscreen_image":
+            syncLockscreen()
             break;
         case "get_local_images":
             handleGetLocalImages(e, message)
@@ -50,7 +54,17 @@ export function handleIPCMessage(e: any, message: any) {
         case "revert_to_default_lockscreen":
             handleRevertToDefaultLockscreen(e, message)
             break;
+        case "get_index":
+            handleGetIndex(e, message)
+            break;
     }
+}
+
+function handleInit() {
+    fs.copyFileSync(path.join(electron.app.getAppPath(), "default_remarkable_lockscreen.png"), path.join(homeDir, "default_remarkable_lockscreen.png"))
+
+    initLockscreenData()
+    initSettings()
 }
 
 function handleGetDeviceStats(event:any, message: GetDeviceStats) {
@@ -58,27 +72,18 @@ function handleGetDeviceStats(event:any, message: GetDeviceStats) {
 }
 
 function handleGetSettings(event: any, message: GetSettings) {
-    event.reply('asynchronous-reply', {
-        type: "settings",
-        deviceType: settings.deviceType,
-        host: settings.host,
-        username: settings.username,
-        password: settings.password
-    })
+    sendSettings()
 }
 
 function handleSaveSettings(event: any, message: Settings) {
     settings.saveSettingsToFile(message)
+    sendSuccess("Settings saved successfully!", 1000)
 }
 
 function handleConnect(event: any, message: Connect) {
     if(!remarkable.connected) {
         remarkable.connect(settings)
     }
-}
-
-function handleGetSuspendedScreen(event: any, message: any) {
-    remarkable.getSuspendedImage()
 }
 
 export function handleSaveImage(event: any, image: Image) {
@@ -170,13 +175,15 @@ function handleChangeLockscreen(event: any, image: Image) {
     const userDataPath = electron.app.getPath('userData');
     const lockscreenPath = path.join(userDataPath, "/local_images/" + image.name);
 
+    fs.writeFileSync(lockscreenPath, image.data)
+
     changeSuspendedImage(
         lockscreenPath,
         () => {
-            getSuspendedImage().then(() => {
-                handleGetLocalImages("", "")
-                reboot()
-            })
+            // getSuspendedImage().then(() => {
+            //     handleGetLocalImages("", "")
+            // })
+            reboot()
         },
         (error: any) => {
             const msg = "error updating lockscreen"
@@ -188,18 +195,28 @@ function handleChangeLockscreen(event: any, image: Image) {
 }
 
 function handleRevertToDefaultLockscreen(event: any, message: any) {
-    const defaultLockscreenPath = path.join(electron.app.getAppPath(), defaultRemarkableImage)
-
     changeSuspendedImage(
-        defaultLockscreenPath.toString(),
+        defaultRemarkableImage,
         () => {
-            getSuspendedImage().then(() => {
-                handleGetLocalImages("", "")
-                reboot()
-            })
+            // getSuspendedImage().then(() => {
+            //     handleGetLocalImages("", "")
+            reboot()
+            // })
+
+            sendSuccess("Successfully reverted to the default lockscreen")
         },
         (error: any) => {
-            const msg = "error reverting to default lockscreen"
+            const msg = "Error reverting to default lockscreen"
+            log.error(msg, error)
+            sendError(msg, 2500)
+        }
+    )
+}
+
+function handleGetIndex(event: any, message: any) {
+    getIndex(
+        (error: any) => {
+            const msg = "error loading index from disk"
             log.error(msg, error)
             sendError(msg, 2500)
         }
@@ -210,6 +227,15 @@ export function sendError(message: string, timeout?: number) {
 
     global.browserWindow.webContents.send('asynchronous-message', {
         type: "error",
+        message: message,
+        timeout: timeout ? timeout : 5000
+    });
+}
+
+export function sendSuccess(message: string, timeout?: number) {
+
+    global.browserWindow.webContents.send('asynchronous-message', {
+        type: "success",
         message: message,
         timeout: timeout ? timeout : 5000
     });

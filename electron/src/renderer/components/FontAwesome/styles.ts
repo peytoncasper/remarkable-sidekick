@@ -9,6 +9,8 @@ export const Icon = styled.i<IconProps>`
   font-size: ${(p) => {
     switch(p.fontSize) {
       default:
+      case 'small':
+        return '16px';
       case 'medium':
         return '20px';
       case 'large':

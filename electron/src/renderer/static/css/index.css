@@ -2,6 +2,8 @@
 @import "./fontawesome/css/solid.css";
 
 @import "tailwind.css";
+@import "button.css";
+
 html {
     height:100%;
 }
@@ -20,6 +22,10 @@ body {
 
 .bg-teal {
     background-color: #58CFA5;
+}
+
+.border-teal {
+    border-color: #06CEA3;
 }
 
 .text-teal {

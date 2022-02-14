@@ -1,14 +1,15 @@
 {
-  "name": "remarkable-toolbox",
+  "name": "remarkable-sidekick",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/main.bundle.js",
+  "main": "build/main.bundle.js",
   "scripts": {
-    "start": "electron ./dist/main.bundle.js",
+    "start": "electron ./build/main.bundle.js",
     "dev": "cross-env NODE_ENV=development webpack --watch --progress --color",
     "test": "echo \"Error: no test specified\" && exit 1",
     "pack": "cross-env NODE_ENV=production webpack && electron-builder --dir",
     "dist": "cross-env NODE_ENV=production webpack && electron-builder",
+    "dist:x64": "cross-env NODE_ENV=production webpack && electron-builder --x64 -mwl",
     "postinstall": "electron-builder install-app-deps"
   },
   "author": "",
@@ -17,11 +18,18 @@
     "appId": "org.rs.RemarkableSidekick",
     "productName": "Remarkable Sidekick",
     "extends": null,
+    "directories": {
+      "buildResources": "build",
+      "output": "dist"
+    },
     "files": [
-      "dist/**/*",
-      "node_modules/**/*",
-      "assets/**/*"
+      "build/**/*",
+      "public/**/*"
     ],
+    "fileAssociations": {
+      "ext": "png",
+      "icon": "icon.png"
+    },
     "dmg": {
       "contents": [
         {
@@ -43,6 +51,12 @@
       "type": "distribution",
       "hardenedRuntime": true,
       "gatekeeperAssess": false
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "AppImage"
     }
   },
   "dependencies": {
@@ -58,7 +72,7 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
-    "recoil": "^0.3.1",
+    "recoil": "^0.6.1",
     "sharp": "^0.28.3",
     "ssh2": "^1.2.0",
     "web-vitals": "^1.0.1"

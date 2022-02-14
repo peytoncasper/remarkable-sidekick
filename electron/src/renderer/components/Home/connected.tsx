@@ -1,16 +1,20 @@
 import * as React from "react";
-import {useRecoilState} from "recoil";
-import {suspendedImageAtom} from "_renderer/atoms/suspendedImage";
-import {connectionStatusAtom} from "_renderer/atoms/connectionStatus";
+import {useRecoilState, useRecoilValue} from "recoil";
 import {storageDetailsAtom} from "_renderer/atoms/storageDetails";
 import {mergeClassNames} from "_renderer/components/utils";
 import {RegularIcon} from "_renderer/components/FontAwesome/regular";
+import {indexAtom, metricsSelector} from "_renderer/atoms";
+import {Metric} from "_renderer/components/Home/metric";
+import {StorageSuspenseContainer, SuspenseContainer} from "./style";
+import {connectionStatusAtom} from "_renderer/atoms/connectionStatus";
+import {StorageDetails} from "_renderer/components/Home/storge";
 
 
 export function Connected() {
-    const [connectionStatus, setConnectionStatus] = useRecoilState(connectionStatusAtom);
-    const [suspendedImage, setSuspendedImage] = useRecoilState(suspendedImageAtom);
     const [storageDetails, setStorageDetails] = useRecoilState(storageDetailsAtom);
+    const connectionStatus = useRecoilValue(connectionStatusAtom);
+
+    const metrics = useRecoilValue(metricsSelector);
 
     const colors = [
         "bg-blue-300",
@@ -41,30 +45,9 @@ export function Connected() {
 
 
             <div className="flex justify-center my-4">
-                <div className="flex flex-1 items-center">
-                    <div style={{borderRadius: "100%", width: "36px", height: "36px"}} className="flex bg-white justify-center items-center">
-                        <RegularIcon className="text-teal" name={"file-pdf"}/>
-                    </div>
-                    <div className="text-lg px-3">
-                        5 PDFs
-                    </div>
-                </div>
-                <div className="flex flex-1 items-center">
-                    <div style={{borderRadius: "100%", width: "36px", height: "36px"}} className="flex bg-white justify-center items-center">
-                        <RegularIcon className="py-1 px-2 text-teal" name={"book-open"}/>
-                    </div>
-                    <div className="text-lg px-3">
-                        4 E-Books
-                    </div>
-                </div>
-                <div className="flex flex-1 items-center">
-                    <div style={{borderRadius: "100%", width: "36px", height: "36px"}} className="flex bg-white justify-center items-center">
-                        <RegularIcon className="py-1 px-2 text-teal" name={"pen-square"}/>
-                    </div>
-                    <div className="text-lg px-3">
-                        10 Notebooks
-                    </div>
-                </div>
+                {connectionStatus.status == "connected" ? <Metric name="PDFs" icon="file-pdf" metric={metrics.pdfs}/> : <SuspenseContainer/>}
+                {connectionStatus.status == "connected" ?<Metric name="E-Books" icon="book-open" metric={metrics.ebooks}/> : <SuspenseContainer/>}
+                {connectionStatus.status == "connected" ? <Metric name="Notebooks" icon="pen-square" metric={metrics.notebooks}/> : <SuspenseContainer/>}
             </div>
 
             <div className="flex flex-row">
@@ -74,34 +57,14 @@ export function Connected() {
                         Storage
                     </div>
 
-                    <div className="relative pt-1">
-                        {/*<div className="overflow-hidden h-4 mb-4 text-xs flex rounded bg-gray-200">*/}
-                        {/*    {*/}
-                        {/*        storageDetails.paths.map((path, i) => {*/}
-                        {/*            return <div style={{width: ((path.used / storageDetails.available) * 100) + "%"}}*/}
-                        {/*                 className={*/}
-                        {/*                     mergeClassNames(colors[i % colors.length],*/}
-                        {/*                         "shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center")*/}
-                        {/*                 }/>*/}
-                        {/*        })*/}
-                        {/*    }*/}
-                        {/*</div>*/}
+                    {
+                        connectionStatus.status == "connected" ?
+                            <StorageDetails
+                                used={storageDetails.used}
+                                available={storageDetails.available}
+                                paths={storageDetails.paths}/> : <StorageSuspenseContainer/>
+                    }
 
-                        <div className="overflow-hidden h-3 mb-4 text-xs flex rounded bg-gray-200">
-                            {
-                                storageDetails.paths.length > 1 ? <div style={{width: ((storageDetails.paths[8].used / (storageDetails.paths[8].available)) * 100) + "%"}}
-                                                                       className={
-                                                                           mergeClassNames("bg-teal",
-                                                                               "shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center")
-                                                                       }/> : null
-                            }
-                        </div>
-                    </div>
-                    <div className="text-sm text-right">
-                        {
-                            storageDetails.paths.length > 1 ? (storageDetails.paths[8].used / 1000000).toFixed(2) + " GB / " + (storageDetails.paths[8].available / 1000000).toFixed(2) + " GB Used" : null
-                        }
-                    </div>
                 </div>
             </div>
 

@@ -59,31 +59,31 @@ export default function Settings() {
 
                 <div className="flex flex-col flex-wrap mb-6 h-4/5">
 
-                    <div className="mb-8">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                               htmlFor="hostName">
-                            Device Type
-                        </label>
-                        <span className="relative z-0 inline-flex shadow-sm rounded-md">
-                          <button
-                              type="button"
-                              className={mergeClassNames(settings.deviceType !== "RM" ? "bg-white" : "bg-gray-200",
-                                  "relative inline-flex items-center px-4 py-2  border border-gray-300 font-medium text-gray-700 hover:bg-gray-50 rounded-tl-lg rounded-bl-lg")}
-                              onClick={() => {setDeviceType("RM")}}
+                    {/*<div className="mb-8">*/}
+                    {/*    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"*/}
+                    {/*           htmlFor="hostName">*/}
+                    {/*        Device Type*/}
+                    {/*    </label>*/}
+                    {/*    <span className="relative z-0 inline-flex shadow-sm rounded-md">*/}
+                    {/*      <button*/}
+                    {/*          type="button"*/}
+                    {/*          className={mergeClassNames(settings.deviceType !== "RM" ? "bg-white" : "bg-gray-200",*/}
+                    {/*              "relative inline-flex items-center px-4 py-2  border border-gray-300 font-medium text-gray-700 hover:bg-gray-50 rounded-tl-lg rounded-bl-lg")}*/}
+                    {/*          onClick={() => {setDeviceType("RM")}}*/}
 
-                          >
-                            Remarkable
-                          </button>
-                          <button
-                              type="button"
-                              className={mergeClassNames(settings.deviceType !== "RM2" ? "bg-white" : "bg-gray-200",
-                              "-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 font-medium text-gray-700 hover:bg-gray-50 rounded-tr-lg rounded-br-lg")}
-                              onClick={() => {setDeviceType("RM2")}}
-                          >
-                            Remarkable 2
-                          </button>
-                        </span>
-                    </div>
+                    {/*      >*/}
+                    {/*        Remarkable*/}
+                    {/*      </button>*/}
+                    {/*      <button*/}
+                    {/*          type="button"*/}
+                    {/*          className={mergeClassNames(settings.deviceType !== "RM2" ? "bg-white" : "bg-gray-200",*/}
+                    {/*          "-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 font-medium text-gray-700 hover:bg-gray-50 rounded-tr-lg rounded-br-lg")}*/}
+                    {/*          onClick={() => {setDeviceType("RM2")}}*/}
+                    {/*      >*/}
+                    {/*        Remarkable 2*/}
+                    {/*      </button>*/}
+                    {/*    </span>*/}
+                    {/*</div>*/}
 
                     <div className="mb-6">
                         <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -120,9 +120,8 @@ export default function Settings() {
                 <div className="flex justify-end">
                     <button
                         id={"saveSettings"}
-                        className="shadow focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+                        className="shadow focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded btn"
                         onClick={(e) => {e.preventDefault(); handleSaveSettings()}}
-                        style={{background: "#08DAAD"}}
                     >
                         Save
                     </button>

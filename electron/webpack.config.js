@@ -15,7 +15,7 @@ const isEnvDevelopment = process.env.NODE_ENV === 'development';
 const commonConfig = {
     devtool: isEnvDevelopment ? 'source-map' : false,
     mode: isEnvProduction ? 'production' : 'development',
-    output: { path: srcPaths('dist') },
+    output: { path: srcPaths('build') },
     node: { __dirname: false, __filename: false },
     optimization: {
         minimize: false
@@ -54,7 +54,7 @@ const commonConfig = {
                 }
             },
             {
-                test: /\.(jpg|png|svg|ico|icns|t)$/,
+                test: /\.(jpg|gif|png|svg|ico|icns|t)$/,
                 loader: 'file-loader',
                 options: {
                     name: '[path][name].[ext]',
@@ -77,7 +77,25 @@ mainConfig.plugins = [
     new CopyPlugin({
         patterns: [{
             from: "src/assets/default_remarkable_lockscreen.png",
-            to: "assets/default_remarkable_lockscreen.png"
+            to: "default_remarkable_lockscreen.png"
+        }]
+    }),
+    new CopyPlugin({
+        patterns: [{
+            from: "public/loading.html",
+            to: "loading.html"
+        }]
+    }),
+    new CopyPlugin({
+        patterns: [{
+            from: "src/renderer/static/icon.png",
+            to: "icon.png"
+        }]
+    }),
+    new CopyPlugin({
+        patterns: [{
+            from: "src/renderer/static/favicon.ico",
+            to: "favicon.ico"
         }]
     }),
     new CopyPlugin({

@@ -4,8 +4,34 @@ import {useDropzone} from 'react-dropzone'
 import {SolidIcon} from "_renderer/components/FontAwesome/solid";
 
 export function FileDropzone() {
+    function saveImage(event: any) {
+        const file = event.target.files[0]
+
+        // Adding comment for later when JPEG support comes along
+        // jpe?g|png
+
+
+    }
+
     const onDrop = useCallback((acceptedFiles: any) => {
         // Do something with the files
+        const file = acceptedFiles[0]
+
+        if ( /\.(png)$/i.test(file.name) ) {
+            const reader = new FileReader();
+
+            reader.addEventListener("load", function () {
+                const img = {
+                    type: "change_lockscreen",
+                    name: file.name,
+                    data: (reader.result as string).replace(/data:.*;base64,/, "")
+                }
+
+                window.api.sendAsynchronousMessage(img)
+            }, false);
+
+            reader.readAsDataURL(file);
+        }
     }, [])
     const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
 

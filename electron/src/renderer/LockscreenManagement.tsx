@@ -1,8 +1,7 @@
 import * as React from "react";
 import RemarkableModel from "_renderer/components/RemarkableModel";
 import {useEffect, useState} from "react";
-import {useRecoilState} from "recoil";
-import {suspendedImageAtom} from "_renderer/atoms/suspendedImage";
+import {useRecoilState, useRecoilValue} from "recoil";
 import {connectionStatusAtom} from "_renderer/atoms/connectionStatus";
 import {storageDetailsAtom} from "_renderer/atoms/storageDetails";
 import {mergeClassNames} from "_renderer/components/utils";
@@ -11,14 +10,17 @@ import {SolidIcon} from "_renderer/components/FontAwesome/solid";
 import {localImagesAtom} from "_renderer/atoms/localImagesAtom";
 import {FileUpload, UploadLabel} from "_renderer/components/RemarkableModel/styles";
 import {FileDropzone} from "_renderer/components/FileDropzone";
+import {lockscreenImageAtom} from "_renderer/atoms/suspendedImage";
 
 
 export function LockscreenManagement() {
-    const [localImages, setLocalImages] = useRecoilState(localImagesAtom);
-    const [galleryView, setGalleryView] = useState("local");
+    const lockscreenImage = useRecoilValue(lockscreenImageAtom);
 
-    const [selectedImage, setSelectedImage] = useState();
-    const [imageSelected, setImageSelected] = useState(false);
+    // const [localImages, setLocalImages] = useRecoilState(localImagesAtom);
+    // const [galleryView, setGalleryView] = useState("local");
+    //
+    // const [selectedImage, setSelectedImage] = useState();
+    // const [imageSelected, setImageSelected] = useState(false);
 
     function handleUploadImage() {
         window.api.sendAsynchronousMessage({
@@ -26,28 +28,7 @@ export function LockscreenManagement() {
         })
     }
 
-    function saveImage(event: any) {
-        const file = event.target.files[0]
 
-        // Adding comment for later when JPEG support comes along
-        // jpe?g|png
-
-        if ( /\.(png)$/i.test(file.name) ) {
-            const reader = new FileReader();
-
-            reader.addEventListener("load", function () {
-                const img = {
-                    type: "save_image",
-                    name: file.name,
-                    data: (reader.result as string).replace(/data:.*;base64,/, "")
-                }
-
-                window.api.sendAsynchronousMessage(img)
-            }, false);
-
-            reader.readAsDataURL(file);
-        }
-    }
 
     function changeLockscreen(imageName: string) {
         window.api.sendAsynchronousMessage({
@@ -64,10 +45,19 @@ export function LockscreenManagement() {
 
     return (
         <div className="w-full flex flex-col">
-            {localImages.length > 0 ?
+
+            <div className="flex flex-1 items-center justify-end m-2">
+                <button
+                    className="rounded-md text-white bg-green-400 hover:bg-green-500 p-2 font-bold"
+                    onClick={(e) => {e.preventDefault(); revertLockscreen()}}
+                >Revert to Default Image</button>
+            </div>
+
+            {lockscreenImage.data.length > 0 ?
                 <div className="h-full flex">
+
                     <div className="flex flex-1 items-center justify-center">
-                        <RemarkableModel image={localImages[0].data}/>
+                        <RemarkableModel image={lockscreenImage.data}/>
                     </div>
                     <div className="flex flex-1 ">
                         <FileDropzone/>

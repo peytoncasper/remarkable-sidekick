@@ -40,6 +40,12 @@ function fontAwesomeLookup(name: string): string {
             return "fa-book-open"
         case "pen-square":
             return "fa-pen-square"
+        case "sync":
+            return "fa-sync"
+        case "chevron-right":
+            return "fa-chevron-right"
+        case "chevron-left":
+            return "fa-chevron-left"
         default:
             return "fa-home"
     }

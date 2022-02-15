@@ -22,9 +22,6 @@ const commonConfig = {
     optimization: {
         minimize: false
     },
-    externals: isArm ? {
-        sharp: 'commonjs sharp'
-    } : {},
     resolve: {
         alias: {
             _: srcPaths('src'),

@@ -1,4 +1,4 @@
-name: Build/release
+n ame: Build/release
 
 on: push
 jobs:
@@ -7,7 +7,13 @@ jobs:
 
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        include:
+        - os: macos-arm
+            env:
+            - TARGET: arm64-apple-darwin
+            - COMPILER: clang
+            - LINKER: clang
+        os: [macos-latest, ubuntu-latest, windows-latest, macos-arm]
 
     steps:
       - name: Check out Git repository

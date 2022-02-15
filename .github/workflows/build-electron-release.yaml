@@ -9,10 +9,10 @@ jobs:
       matrix:
         include:
         - os: macos-arm
-            env:
-            - TARGET: arm64-apple-darwin
-            - COMPILER: clang
-            - LINKER: clang
+          env:
+          - TARGET: arm64-apple-darwin
+          - COMPILER: clang
+          - LINKER: clang
         os: [macos-latest, ubuntu-latest, windows-latest, macos-arm]
 
     steps:

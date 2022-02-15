@@ -13,7 +13,7 @@ jobs:
       - name: Check out Git repository
         uses: actions/checkout@v1
       - name: Install Snapcraft
-        uses: action-snapcraft
+        uses: samuelmeuli/action-snapcraft@v1
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v1
         with:

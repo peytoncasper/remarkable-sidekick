@@ -1,9 +1,6 @@
 name: Build/release
 
 on: push
-defaults:
-  run:
-    working-directory: electron # The working directory path
 jobs:
   release:
     runs-on: ${{ matrix.os }}
@@ -20,6 +17,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 10
+        working-directory: electron
+        run: yarn install
 
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1
@@ -32,4 +31,4 @@ jobs:
           # If the commit is tagged with a version (e.g. "v1.0.0"),
           # release the app after building
           release: ${{ startsWith(github.ref, 'refs/tags/v') }}
-        run:
+        run: echo ""

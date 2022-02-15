@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "build/main.bundle.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/peytoncasper/remarkable-sidekick"
+  },
   "scripts": {
     "build":  "cross-env NODE_ENV=production webpack",
     "start": "electron ./build/main.bundle.js",

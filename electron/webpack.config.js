@@ -22,6 +22,9 @@ const commonConfig = {
     optimization: {
         minimize: false
     },
+    externals: {
+        'sharp': 'commonjs sharp'
+    },
     resolve: {
         alias: {
             _: srcPaths('src'),

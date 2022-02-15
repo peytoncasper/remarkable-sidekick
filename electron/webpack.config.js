@@ -11,6 +11,8 @@ function srcPaths(src) {
 const isEnvProduction = process.env.NODE_ENV === 'production';
 const isEnvDevelopment = process.env.NODE_ENV === 'development';
 
+const isArm = process.env.NODE_ARCH === 'arm64';
+
 // #region Common settings
 const commonConfig = {
     devtool: isEnvDevelopment ? 'source-map' : false,
@@ -20,9 +22,9 @@ const commonConfig = {
     optimization: {
         minimize: false
     },
-    externals: {
+    externals: isArm ? {
         sharp: 'commonjs sharp'
-    },
+    } : {},
     resolve: {
         alias: {
             _: srcPaths('src'),

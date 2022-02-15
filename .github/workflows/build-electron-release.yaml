@@ -7,18 +7,13 @@ jobs:
 
     strategy:
       matrix:
-        include:
-        - os: macos-arm
-          env:
-          - TARGET: arm64-apple-darwin
-          - COMPILER: clang
-          - LINKER: clang
-        os: [macos-latest, ubuntu-latest, windows-latest, macos-arm]
+        os: [macos-latest, ubuntu-latest, windows-latest]
 
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v1
-
+      - name: Install Snapcraft
+        uses: action-snapcraft
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v1
         with:
